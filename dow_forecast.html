@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOW Live Chat — Tutor Forecast Model | Varsity Tutors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g1:#09634f;--g2:#38826e;--g3:#5fa48f;
+  --mint:#ecfce4;--mint2:#c8f0d4;
+  --c100:#f8f9fa;--c200:#eef0f2;--c300:#dee2e6;--c400:#9ca3af;
+  --c600:#4b5563;--c900:#111827;
+  --orange:#f97316;--red:#ef4444;--blue:#3b82f6;
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --r:8px;--rl:12px;
+}
+body{font-family:var(--font);color:var(--c900);background:#f0f2f5;min-height:100vh}
+.nav{background:var(--g1);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.nav-left{display:flex;align-items:center;gap:12px}
+.nav-logo{width:36px;height:36px;border-radius:8px;overflow:hidden;background:#000;flex-shrink:0}
+.nav-logo img{width:100%;height:100%;object-fit:cover}
+.nav-name{color:#fff;font-size:15px;font-weight:600;letter-spacing:-.3px;line-height:1.2}
+.nav-sub{color:rgba(255,255,255,.5);font-size:11px}
+.nav-badge{background:rgba(255,255,255,.15);color:#fff;font-size:11px;padding:5px 13px;border-radius:20px;font-weight:500;border:1px solid rgba(255,255,255,.25);white-space:nowrap}
+.page{max-width:1240px;margin:0 auto;padding:24px 20px 56px}
+.ph{background:#fff;border-radius:var(--rl);border:1px solid var(--c200);padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.ph-title{font-size:19px;font-weight:600}
+.ph-sub{font-size:13px;color:var(--c400);margin-top:3px}
+.ph-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tg{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+.tg-g{background:var(--mint);color:var(--g1)}
+.tg-n{background:var(--c100);color:var(--c600);border:1px solid var(--c200)}
+.panel{background:#fff;border-radius:var(--rl);border:1px solid var(--c200);padding:20px 24px;margin-bottom:12px}
+.slabel{font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.1em;margin:0 0 12px;padding-bottom:6px;border-bottom:2px solid var(--mint2)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:10px}
+.ctrl{background:var(--c100);border:1px solid var(--c200);border-radius:var(--r);padding:11px 13px}
+.cl{font-size:12px;color:var(--c600);margin-bottom:5px;font-weight:500}
+.csub{font-size:10px;color:var(--c400);margin-top:3px;font-family:var(--mono)}
+select{width:100%;font-family:var(--font);font-size:13px;font-weight:500;color:var(--c900);background:#fff;border:1px solid var(--c300);border-radius:6px;padding:6px 8px;cursor:pointer;outline:none}
+select:focus{border-color:var(--g2);box-shadow:0 0 0 2px rgba(56,130,110,.2)}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.met{background:#fff;border:1px solid var(--c200);border-radius:var(--rl);padding:16px;position:relative;overflow:hidden}
+.met::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--g2)}
+.met.hi::before{background:var(--orange)}
+.ml{font-size:10px;color:var(--c400);margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.mv{font-size:24px;font-weight:600;line-height:1.2}
+.ms{font-size:11px;color:var(--c400);margin-top:3px}
+.tabs-wrap{background:#fff;border-radius:var(--rl);border:1px solid var(--c200);overflow:hidden}
+.tabs{display:flex;gap:3px;padding:8px 8px 0;background:var(--c100);border-bottom:1px solid var(--c200);flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:8px 8px 0 0;font-size:13px;cursor:pointer;background:transparent;color:var(--c600);border:none;font-family:var(--font);font-weight:500;transition:all .12s}
+.tab:hover{background:#fff;color:var(--c900)}
+.tab.on{background:#fff;color:var(--g1);font-weight:600;border:1px solid var(--c200);border-bottom-color:#fff;margin-bottom:-1px}
+.tc{padding:20px 24px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-size:10px;font-weight:700;color:var(--c400);padding:8px 10px;border-bottom:1px solid var(--c200);text-transform:uppercase;letter-spacing:.06em;background:var(--c100)}
+td{padding:8px 10px;border-bottom:1px solid var(--c200);color:var(--c900)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--mint)}
+.co{border-radius:var(--r);padding:12px 16px;font-size:13px;margin-bottom:1rem;font-weight:500}
+.co-g{background:var(--mint);color:var(--g1);border-left:3px solid var(--g2)}
+.co-r{background:#fef2f2;color:#991b1b;border-left:3px solid var(--red)}
+.co-b{background:#eff6ff;color:#1e40af;border-left:3px solid var(--blue)}
+.co-o{background:#fffbeb;color:#92400e;border-left:3px solid var(--orange)}
+.co-n{background:var(--c100);color:var(--c600);border-left:3px solid var(--c400)}
+.note{font-size:11px;color:var(--c400);padding:8px 0;border-top:1px solid var(--c200);margin-top:1rem;font-style:italic}
+.sec{font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.08em;margin:1.4rem 0 .6rem}
+.cg3c{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cc{border:1px solid var(--c200);border-radius:var(--rl);padding:16px;background:#fff}
+.ct{font-size:10px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.cline{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;color:var(--c600);border-bottom:1px dashed var(--c200)}
+.cline:last-of-type{border-bottom:none}
+.ctot{display:flex;justify-content:space-between;font-size:15px;font-weight:600;padding-top:10px;margin-top:6px;border-top:2px solid var(--g2);color:var(--g1)}
+.rg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1rem}
+.rc{border:1px solid var(--c200);border-radius:var(--rl);padding:14px;background:#fff}
+.rt{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--c400);margin-bottom:6px}
+.tl-row{display:grid;grid-template-columns:110px 1fr;gap:8px;margin-bottom:6px;align-items:center}
+.tl-label{font-size:11px;color:var(--c600);font-weight:500}
+.tl-bars{display:grid;grid-template-columns:repeat(10,1fr);gap:2px}
+.tl-bar{height:22px;border-radius:4px;display:flex;align-items:center;padding:0 5px;font-size:9px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.tl-e{height:22px}
+.bg{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;font-family:var(--mono)}
+.bg-g{background:var(--mint);color:var(--g1)}
+.bg-o{background:#fffbeb;color:#92400e}
+.bg-r{background:#fef2f2;color:#991b1b}
+.footer{text-align:center;color:var(--c400);font-size:12px;margin-top:28px;padding-top:20px;border-top:1px solid var(--c300)}
+@media(max-width:900px){
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:1fr}
+  .cg3c{grid-template-columns:1fr}
+  .rg{grid-template-columns:1fr}
+  .page{padding:12px 12px 32px}
+  .ph{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <div class="nav-logo"><img src="data:image/png;base64,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" alt="Nerdy"></div>
+    <div>
+      <div class="nav-name">Varsity Tutors</div>
+      <div class="nav-sub">Operations &amp; Forecasting</div>
+    </div>
+  </div>
+  <div class="nav-badge">DOW Program &middot; Nov 2026 Launch</div>
+</nav>
+
+<div class="page">
+<div class="ph">
+  <div>
+    <div class="ph-title">DOW Live Chat &mdash; Tutor Forecast Model</div>
+    <div class="ph-sub">Contracting goals by region &middot; 933K eligible students &middot; 29 subjects &middot; November 1, 2026 launch</div>
+  </div>
+  <div class="ph-tags">
+    <span class="tg tg-g">Data: March 2026</span>
+    <span class="tg tg-g">230K sessions analyzed</span>
+    <span class="tg tg-n">US &middot; UK &middot; Philippines</span>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="slabel">Demand inputs</div>
+  <div class="g3">
+    <div class="ctrl"><div class="cl">US usage rate</div>
+      <select id="us-usage">
+        <option value="0.01">Floor &mdash; 1% &middot; 2 sessions/yr</option>
+        <option value="0.025">Low &mdash; 2.5% &middot; 5 sessions/yr</option>
+        <option value="0.05">Mid &mdash; 5% &middot; 10 sessions/yr</option>
+        <option value="0.065" selected>Base &mdash; 6.5% &middot; 13 sessions/yr</option>
+        <option value="0.10">High &mdash; 10% &middot; 20 sessions/yr</option>
+        <option value="0.15">Very high &mdash; 15% &middot; 30 sessions/yr</option>
+        <option value="0.20">Extreme &mdash; 20% &middot; 40 sessions/yr</option>
+      </select>
+    </div>
+    <div class="ctrl"><div class="cl">Europe &amp; Asia usage rate</div>
+      <select id="int-usage">
+        <option value="0.01">Floor &mdash; 1% &middot; 2 sessions/yr</option>
+        <option value="0.025">Low &mdash; 2.5% &middot; 5 sessions/yr</option>
+        <option value="0.05">Mid &mdash; 5% &middot; 10 sessions/yr</option>
+        <option value="0.065" selected>Base &mdash; 6.5% &middot; 13 sessions/yr</option>
+        <option value="0.10">High &mdash; 10% &middot; 20 sessions/yr</option>
+        <option value="0.15">Very high &mdash; 15% &middot; 30 sessions/yr</option>
+        <option value="0.20">Extreme &mdash; 20% &middot; 40 sessions/yr</option>
+      </select>
+    </div>
+    <div class="ctrl"><div class="cl">Language interest rate</div>
+      <select id="lang-int">
+        <option value="0.15">15% &mdash; conservative</option>
+        <option value="0.25" selected>25% &mdash; base estimate</option>
+        <option value="0.35">35%</option>
+        <option value="0.50">50% &mdash; high interest</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="slabel">Supply inputs</div>
+  <div class="g2">
+    <div class="ctrl"><div class="cl">US tutors willing to take live chat</div>
+      <select id="us-avail">
+        <option value="0.50">50%</option><option value="0.55">55%</option>
+        <option value="0.60" selected>60%</option><option value="0.65">65%</option>
+        <option value="0.70">70%</option><option value="0.80">80%</option>
+        <option value="0.90">90%</option>
+      </select>
+    </div>
+    <div class="ctrl">
+      <div class="cl">Max utilization ceiling (US)</div>
+      <div class="csub">Industry norm: 70&ndash;80% &middot; prevents stockouts on surge demand</div>
+      <select id="util-ceil">
+        <option value="0.60">60% &mdash; very conservative</option>
+        <option value="0.70">70% &mdash; conservative</option>
+        <option value="0.75" selected>75% &mdash; recommended</option>
+        <option value="0.80">80% &mdash; standard</option>
+        <option value="0.90">90% &mdash; aggressive</option>
+        <option value="1.00">100% &mdash; no buffer</option>
+      </select>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="ctrl">
+      <div class="cl">EU/AS sessions per tutor per week</div>
+      <div class="csub">Actual: median 2 &middot; mean 7.6 &middot; P75 = 7/wk</div>
+      <select id="intl-sess-wk">
+        <option value="2">2/wk &mdash; median</option>
+        <option value="5">5/wk &mdash; conservative</option>
+        <option value="7" selected>7/wk &mdash; P75 base</option>
+        <option value="10">10/wk</option>
+        <option value="15">15/wk</option>
+        <option value="20">20/wk &mdash; P90</option>
+      </select>
+    </div>
+    <div class="ctrl">
+      <div class="cl">Avg concurrent chats per tutor</div>
+      <div class="csub">Validated: 26.6% of sessions overlap &middot; 15.6% multitask</div>
+      <select id="concurrent">
+        <option value="1.0">1.0x &mdash; no multitasking</option>
+        <option value="1.2" selected>1.2x &mdash; light (base)</option>
+        <option value="1.5">1.5x &mdash; moderate</option>
+        <option value="2.0">2.0x &mdash; heavy</option>
+      </select>
+    </div>
+    <div class="ctrl">
+      <div class="cl">Avg DOW subjects per tutor</div>
+      <div class="csub">Validated: actual avg 3.43 subjects/tutor</div>
+      <select id="spt">
+        <option value="1">1 &mdash; dedicated</option><option value="2">2 subjects</option>
+        <option value="4" selected>4 subjects</option><option value="6">6 subjects</option>
+        <option value="8">8 subjects</option><option value="10">10 subjects</option>
+      </select>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="ctrl"><div class="cl">Pre-launch attrition</div>
+      <select id="att">
+        <option value="0.10">10% &mdash; low</option><option value="0.15">15%</option>
+        <option value="0.20" selected>20%</option><option value="0.25">25%</option>
+        <option value="0.30">30% &mdash; high</option>
+      </select>
+    </div>
+    <div class="ctrl"><div class="cl">Min tutors per subject</div>
+      <select id="min-t">
+        <option value="0">No floor</option><option value="1" selected>1 minimum</option>
+        <option value="2">2 minimum</option><option value="3">3 minimum</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="metrics" id="summary"></div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab on" onclick="showTab('us',this)">US</button>
+    <button class="tab" onclick="showTab('uk',this)">Europe (UK)</button>
+    <button class="tab" onclick="showTab('as',this)">Asia (PH)</button>
+    <button class="tab" onclick="showTab('tl',this)">Timeline</button>
+    <button class="tab" onclick="showTab('cost',this)">Cost</button>
+    <button class="tab" onclick="showTab('notes',this)">Assumptions</button>
+  </div>
+  <div class="tc">
+    <div id="t-us"></div>
+    <div id="t-uk" style="display:none"></div>
+    <div id="t-as" style="display:none"></div>
+    <div id="t-tl" style="display:none"></div>
+    <div id="t-cost" style="display:none"></div>
+    <div id="t-notes" style="display:none"></div>
+  </div>
+</div>
+
+<div class="footer">Varsity Tutors &middot; Operations &amp; Forecasting &middot; Data as of March 2026 &middot; 230,602 sessions analyzed over 720 days</div>
+</div>
+<script>
+const ST={US:888000,EU:25000,AS:20000};
+const W=52,UKR=18,ASR=10;
+const US_SESS={0.01:2,0.025:5,0.05:10,0.065:13,0.10:20,0.15:30,0.20:40};
+const SI=0.6;
+const DUR={'ES Math':16.9,'ES Reading':15.8,'ES English':15.2,'ES Writing':16.5,'ES Science':16.9,'MS Math':16.9,'MS English':17.4,'MS Science':16.7,'MS Writing':16.4,'MS Reading':14.7,'Algebra':19.6,'Pre-Algebra':19.6,'Algebra 2':23.1,'Geometry':22.1,'Pre-Calculus':23.9,'HS English':22.2,'HS Writing':23.9,'HS Chemistry':24.0,'HS Physics':24.7,'HS Biology':22.8,'HS Science':25.6,'SAT':19,'ACT':19,'Exec. Func.':19,'Spanish':19,'German':19,'Italian':19,'Japanese':19,'Korean':19};
+const SUBS=[
+  {n:"ES Math",g:"Elementary",rem:67826,iv:1060,euO:0,asO:0,noAS:0,la:0,rr:134},
+  {n:"ES Reading",g:"Elementary",rem:49726,iv:392,euO:0,asO:0,noAS:0,la:0,rr:122},
+  {n:"ES English",g:"Elementary",rem:46172,iv:136,euO:0,asO:0,noAS:0,la:0,rr:95},
+  {n:"ES Writing",g:"Elementary",rem:43126,iv:103,euO:0,asO:0,noAS:0,la:0,rr:115},
+  {n:"ES Science",g:"Elementary",rem:28766,iv:43,euO:0,asO:0,noAS:0,la:0,rr:62},
+  {n:"MS Math",g:"Middle School",rem:56990,iv:1654,euO:0,asO:0,noAS:0,la:0,rr:106},
+  {n:"MS English",g:"Middle School",rem:39574,iv:149,euO:0,asO:0,noAS:0,la:0,rr:83},
+  {n:"MS Science",g:"Middle School",rem:24974,iv:113,euO:0,asO:0,noAS:0,la:0,rr:60},
+  {n:"MS Writing",g:"Middle School",rem:34028,iv:75,euO:0,asO:0,noAS:0,la:0,rr:103},
+  {n:"MS Reading",g:"Middle School",rem:37934,iv:56,euO:0,asO:0,noAS:0,la:0,rr:98},
+  {n:"Algebra",g:"HS Math",rem:44782,iv:1711,euO:0,asO:0,noAS:0,la:0,rr:63},
+  {n:"Pre-Algebra",g:"HS Math",rem:43020,iv:269,euO:0,asO:0,noAS:0,la:0,rr:41},
+  {n:"Algebra 2",g:"HS Math",rem:27932,iv:2191,euO:0,asO:0,noAS:0,la:0,rr:39},
+  {n:"Geometry",g:"HS Math",rem:26126,iv:1923,euO:0,asO:0,noAS:0,la:0,rr:31},
+  {n:"Pre-Calculus",g:"HS Math",rem:26542,iv:2138,euO:0,asO:0,noAS:0,la:0,rr:33},
+  {n:"HS English",g:"HS Humanities",rem:32004,iv:233,euO:0,asO:0,noAS:0,la:0,rr:110},
+  {n:"HS Writing",g:"HS Humanities",rem:25582,iv:72,euO:0,asO:0,noAS:0,la:0,rr:100},
+  {n:"HS Chemistry",g:"HS Science",rem:14222,iv:1562,euO:0,asO:0,noAS:0,la:0,rr:18},
+  {n:"HS Physics",g:"HS Science",rem:12988,iv:1023,euO:0,asO:0,noAS:0,la:0,rr:13},
+  {n:"HS Biology",g:"HS Science",rem:15430,iv:406,euO:0,asO:0,noAS:0,la:0,rr:35},
+  {n:"HS Science",g:"HS Science",rem:15600,iv:31,euO:0,asO:0,noAS:0,la:0,rr:26},
+  {n:"SAT",g:"Test Prep",rem:12598,iv:438,euO:0,asO:0,noAS:0,la:0,rr:10,sa:1,nd:1},
+  {n:"ACT",g:"Test Prep",rem:10830,iv:229,euO:0,asO:0,noAS:0,la:0,rr:5,sa:1,nd:1},
+  {n:"Exec. Func.",g:"Special Ed",rem:7920,iv:17,euO:0,asO:0,noAS:0,la:0,rr:15,nd:1},
+  {n:"Spanish",g:"Language",rem:11918,iv:640,euO:0,asO:0,noAS:1,la:0,rr:19,nd:1},
+  {n:"German",g:"Language",rem:0,iv:48,euO:1,asO:0,noAS:0,la:1,cw:0.40,rr:0,nd:1},
+  {n:"Italian",g:"Language",rem:0,iv:51,euO:1,asO:0,noAS:0,la:1,cw:0.30,rr:0,nd:1},
+  {n:"Japanese",g:"Language",rem:0,iv:45,euO:0,asO:1,noAS:0,la:1,cw:0.60,rr:0,nd:1},
+  {n:"Korean",g:"Language",rem:0,iv:44,euO:0,asO:1,noAS:0,la:1,cw:0.40,rr:0,nd:1},
+];
+const tIV=SUBS.reduce((s,x)=>s+x.iv,0);
+SUBS.forEach(s=>s.w=s.iv/tIV);
+const f=n=>Math.round(n).toLocaleString();
+const fd=n=>n.toFixed(1);
+const fm=n=>'$'+(n/1000).toFixed(0)+'K';
+const wa=(n,a)=>n>0?Math.ceil(n/(1-a)):0;
+const inUS=s=>!s.euO&&!s.asO;
+const inEU=s=>!s.asO&&!s.noAS;
+const inAS=s=>!s.euO&&!s.noAS;
+function wkD(s,pool,uR,aS,li){
+  if(s.la)return pool*uR*aS*li/W;
+  return pool*uR*aS*s.w*(s.sa?SI:1)/W;
+}
+function compute(usU,intU,usAv,uc,isw,cc,spt,mt,li,att){
+  const usA=US_SESS[usU],intA=US_SESS[intU];
+  const rows=SUBS.map(s=>{
+    const dur=DUR[s.n]||19;
+    let uD=0,uSp=0,uG=0,uN=0;
+    if(inUS(s)){uD=wkD(s,ST.US,usU,usA,li);uSp=s.rem*uc*usAv*cc*(60/dur)/spt;uG=Math.max(0,uD-uSp);uN=uG>0?Math.ceil(uG/(isw*cc)):0;}
+    let eD=0,eT=0;
+    if(inEU(s)){const p=s.la?ST.EU*(s.cw||1):ST.EU;eD=wkD(s,p,intU,intA,li);eT=Math.max(mt,Math.ceil(eD/(isw*cc)));}
+    let aD=0,aT=0;
+    if(inAS(s)){const p=s.la?ST.AS*(s.cw||1):ST.AS;aD=wkD(s,p,intU,intA,li);aT=Math.max(mt,Math.ceil(aD/(isw*cc)));}
+    return{...s,dur,uD,uSp,uG,uN,eD,eT,aD,aT};
+  });
+  const tUSp=rows.filter(r=>inUS(r)).reduce((s,r)=>s+r.uSp,0);
+  const tUD=rows.reduce((s,r)=>s+r.uD,0);
+  const tUN=rows.reduce((s,r)=>s+r.uN,0);
+  const usUA=Math.ceil(tUN/spt),usC=wa(usUA,att);
+  const tES=rows.reduce((s,r)=>s+r.eT,0),euUA=Math.ceil(tES/spt),euC=wa(euUA,att);
+  const tAS2=rows.reduce((s,r)=>s+r.aT,0),asUA=Math.ceil(tAS2/spt),asC=wa(asUA,att);
+  const eAS=rows.reduce((s,r)=>s+r.eD*W,0),aAS=rows.reduce((s,r)=>s+r.aD*W,0);
+  const eAH=rows.reduce((s,r)=>s+r.eD*W*(r.dur/60),0),aAH=rows.reduce((s,r)=>s+r.aD*W*(r.dur/60),0);
+  const tc=eAH*UKR+aAH*ASR;
+  return{rows,tUSp,tUD,tUN,usUA,usC,tES,euUA,euC,tAS2,asUA,asC,eAS,aAS,eAH,aAH,tc};
+}
+function gbadge(g){return `<span style="font-size:10px;background:var(--mint);color:var(--g1);padding:2px 7px;border-radius:10px;font-weight:600">${g}</span>`;}
+function render(){
+  const usU=parseFloat(document.getElementById('us-usage').value);
+  const intU=parseFloat(document.getElementById('int-usage').value);
+  const usAv=parseFloat(document.getElementById('us-avail').value);
+  const uc=parseFloat(document.getElementById('util-ceil').value);
+  const isw=parseInt(document.getElementById('intl-sess-wk').value);
+  const cc=parseFloat(document.getElementById('concurrent').value);
+  const spt=parseInt(document.getElementById('spt').value);
+  const mt=parseInt(document.getElementById('min-t').value);
+  const li=parseFloat(document.getElementById('lang-int').value);
+  const att=parseFloat(document.getElementById('att').value);
+  const R=compute(usU,intU,usAv,uc,isw,cc,spt,mt,li,att);
+  const{rows,tUSp,tUD,usC,euUA,euC,asUA,asC,eAH,aAH,eAS,aAS,tc}=R;
+  const ok=usC===0;
+  document.getElementById('summary').innerHTML=`
+    <div class="met ${ok?'':'hi'}"><div class="ml">US contracts</div>
+      <div class="mv" style="color:${ok?'var(--g1)':'var(--orange)'}">${ok?'None':'+'+f(usC)}</div>
+      <div class="ms">${ok?'existing pool sufficient':'new tutors needed'}</div></div>
+    <div class="met"><div class="ml">UK contracts (Europe)</div><div class="mv">+${f(euC)}</div><div class="ms">${f(euUA)} active &middot; DOW-dedicated</div></div>
+    <div class="met"><div class="ml">PH contracts (Asia)</div><div class="mv">+${f(asC)}</div><div class="ms">${f(asUA)} active &middot; DOW-dedicated</div></div>
+    <div class="met"><div class="ml">Intl annual cost</div><div class="mv" style="color:var(--g1)">${fm(tc)}</div><div class="ms">${fm(tc/12)}/month</div></div>`;
+  const uS=[...rows].filter(r=>inUS(r)).sort((a,b)=>b.uD-a.uD);
+  document.getElementById('t-us').innerHTML=`
+    <div class="co ${ok?'co-g':'co-r'}">Weekly DOW demand: ${f(tUD)} sessions &middot; Spare at ${(uc*100).toFixed(0)}% ceiling: ${f(tUSp)} sessions/wk &middot; ${ok?'No new US contracts needed':'Gap &mdash; '+f(usC)+' contracts needed (incl. '+Math.round(att*100)+'% attrition)'}</div>
+    <table><thead><tr><th>Subject</th><th>Group</th><th>Regions</th><th>Duration</th><th>DOW demand/wk</th><th>Spare (${(uc*100).toFixed(0)}% ceiling)</th><th>Gap</th><th>New tutors</th></tr></thead>
+    <tbody>${uS.map(r=>`<tr>
+      <td style="font-weight:500">${r.n}${r.nd?'<span style="color:#f97316;font-size:10px;margin-left:4px">&#9888;</span>':''}</td>
+      <td>${gbadge(r.g)}</td>
+      <td style="color:var(--c400);font-size:11px">${r.noAS?'US+EU':r.euO?'EU':r.asO?'AS':'All'}</td>
+      <td style="font-family:var(--mono);font-size:11px;color:var(--c400)">${fd(r.dur)}m${r.nd?'*':''}</td>
+      <td>${f(r.uD)}</td><td>${f(r.uSp)}</td>
+      <td style="color:var(--c400)">${r.uG>0?f(r.uG):'&mdash;'}</td>
+      <td style="font-weight:600;color:${r.uN>0?'var(--orange)':'var(--c400)'}">${r.uN>0?'+'+r.uN:'&mdash;'}</td>
+    </tr>`).join('')}</tbody></table>
+    <div class="note">* 19 min proxy (no session data). Spare = remaining hrs/wk &times; ${(uc*100).toFixed(0)}% &times; ${(usAv*100).toFixed(0)}% willing &times; ${cc}&times; concurrent &divide; ${spt} subjects/tutor.</div>`;
+  const eS=[...rows].filter(r=>inEU(r)).sort((a,b)=>b.eT-a.eT);
+  document.getElementById('t-uk').innerHTML=`
+    <div class="co co-b">${f(R.tES)} subject-slots &divide; ${spt} subjects/tutor = ${f(euUA)} active UK tutors &rarr; ${f(euC)} contracts (incl. ${Math.round(att*100)}% attrition)</div>
+    <table><thead><tr><th>Subject</th><th>Group</th><th>Student pool</th><th>DOW demand/wk</th><th>Eff. sessions/tutor/wk</th><th>Tutors needed</th></tr></thead>
+    <tbody>${eS.map(r=>`<tr>
+      <td style="font-weight:500">${r.n}</td><td>${gbadge(r.g)}</td>
+      <td style="font-size:11px;color:var(--c600)">${r.la?f(ST.EU*(r.cw||1))+' ('+((r.cw||1)*100).toFixed(0)+'%)':f(ST.EU)}</td>
+      <td>${f(r.eD)}</td><td style="font-family:var(--mono);color:var(--c400)">${(isw*cc).toFixed(1)}</td>
+      <td style="font-weight:600;color:var(--g1)">${r.eT}</td>
+    </tr>`).join('')}</tbody></table>
+    <div class="note">Includes Spanish (US+EU). German 40% of EU, Italian 30%. Language interest: ${(li*100).toFixed(0)}%.</div>`;
+  const aS=[...rows].filter(r=>inAS(r)).sort((a,b)=>b.aT-a.aT);
+  document.getElementById('t-as').innerHTML=`
+    <div class="co co-o">${f(R.tAS2)} subject-slots &divide; ${spt} subjects/tutor = ${f(asUA)} active PH tutors &rarr; ${f(asC)} contracts (incl. ${Math.round(att*100)}% attrition)</div>
+    <table><thead><tr><th>Subject</th><th>Group</th><th>Student pool</th><th>DOW demand/wk</th><th>Eff. sessions/tutor/wk</th><th>Tutors needed</th></tr></thead>
+    <tbody>${aS.map(r=>`<tr>
+      <td style="font-weight:500">${r.n}</td><td>${gbadge(r.g)}</td>
+      <td style="font-size:11px;color:var(--c600)">${r.la?f(ST.AS*(r.cw||1))+' ('+((r.cw||1)*100).toFixed(0)+'%)':f(ST.AS)}</td>
+      <td>${f(r.aD)}</td><td style="font-family:var(--mono);color:var(--c400)">${(isw*cc).toFixed(1)}</td>
+      <td style="font-weight:600;color:var(--g1)">${r.aT}</td>
+    </tr>`).join('')}</tbody></table>
+    <div class="note">Spanish excluded from Asia. Japanese 60% (Japan ~54K troops), Korean 40% (South Korea ~28K). Language interest: ${(li*100).toFixed(0)}%.</div>`;
+  const euMo=Math.ceil(euC/7),asMo=Math.ceil(asC/7),usMo=usC>0?Math.ceil(usC/3):0;
+  const uPace=uS.filter(r=>r.uN>0).map(r=>{
+    const m=r.rr>0?Math.ceil(r.uN/r.rr):'-';
+    const risk=typeof m==='number'&&m>=3?'bg bg-r':typeof m==='number'&&m>=2?'bg bg-o':'bg bg-g';
+    const st=['Sep','Aug','Jul','Jun (early!)'];
+    return{n:r.n,need:r.uN,rr:r.rr,m,risk,start:typeof m==='number'?st[Math.min(3,Math.max(0,3-m))]:'ASAP'};
+  });
+  const BARS=[
+    {lb:'UK setup',s:0,e:1,c:'#38826e',t:'Setup'},
+    {lb:'UK hire',s:2,e:8,c:'#09634f',t:'+'+f(euC)},
+    {lb:'PH setup',s:0,e:1,c:'#f59e0b',t:'Setup'},
+    {lb:'PH hire',s:2,e:8,c:'#d97706',t:'+'+f(asC)},
+    {lb:'US hire',s:5,e:7,c:'#5fa48f',t:usC>0?'+'+f(usC):'None needed'},
+    {lb:'Launch Nov 1',s:9,e:9,c:'#ef4444',t:'Nov 1'},
+  ];
+  document.getElementById('t-tl').innerHTML=`
+    <div class="co co-o">UK and PH need pipelines built from scratch. Start <strong>April 2026</strong> (7 months out). US can start <strong>July 2026</strong> using existing infrastructure.</div>
+    <div class="rg">
+      <div class="rc"><div class="rt">US</div><div style="font-size:20px;font-weight:600;color:${usC>0?'var(--orange)':'var(--g1)'}">${usC>0?'+'+f(usC):'None needed'}</div><div style="font-size:12px;color:var(--c400);margin-top:4px">Jul&ndash;Sep 2026${usC>0?' &middot; ~'+f(usMo)+'/mo':''}</div></div>
+      <div class="rc"><div class="rt">UK (Europe)</div><div style="font-size:20px;font-weight:600;color:var(--g1)">+${f(euC)}</div><div style="font-size:12px;color:var(--c400);margin-top:4px">Apr&ndash;Oct 2026 &middot; ~${f(euMo)}/mo</div></div>
+      <div class="rc"><div class="rt">Philippines (Asia)</div><div style="font-size:20px;font-weight:600;color:var(--orange)">+${f(asC)}</div><div style="font-size:12px;color:var(--c400);margin-top:4px">Apr&ndash;Oct 2026 &middot; ~${f(asMo)}/mo</div></div>
+    </div>
+    <div class="sec">Hiring timeline &mdash; Feb to Nov 2026</div>
+    <div style="display:grid;grid-template-columns:110px 1fr;gap:6px;margin-bottom:4px"><div></div>
+      <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:2px">${'Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov'.split(',').map(m=>`<div style="font-size:9px;color:var(--c400);text-align:center">${m}</div>`).join('')}</div>
+    </div>
+    ${BARS.map(b=>`<div class="tl-row"><div class="tl-label">${b.lb}</div><div class="tl-bars">${Array.from({length:10},(_,i)=>i>=b.s&&i<=b.e?`<div class="tl-bar" style="background:${b.c}">${i===b.s?b.t:''}</div>`:`<div class="tl-e"></div>`).join('')}</div></div>`).join('')}
+    ${uPace.length>0?`<div class="sec" style="margin-top:1.5rem">US subject pacing check</div>
+    <table><thead><tr><th>Subject</th><th>New tutors</th><th>Monthly run rate</th><th>Months needed</th><th>Start by</th></tr></thead>
+    <tbody>${uPace.map(r=>`<tr><td style="font-weight:500">${r.n}</td><td>${r.need}</td><td style="font-family:var(--mono)">${r.rr}/mo</td><td><span class="${r.risk}">${r.m} mo</span></td><td>${r.start}</td></tr>`).join('')}</tbody></table>`:''}
+    <div class="note">All counts include ${Math.round(att*100)}% attrition buffer. US run rates from March 2026 actuals.</div>`;
+  const avgED=eAS>0?(eAH/eAS*60).toFixed(1):'&mdash;';
+  const avgAD=aAS>0?(aAH/aAS*60).toFixed(1):'&mdash;';
+  document.getElementById('t-cost').innerHTML=`
+    <div class="co co-n" style="margin-bottom:1.2rem">Per-subject session durations from 230K sessions (HS ~22&ndash;25 min, ES/MS ~15&ndash;17 min). Weighted avg: EU ${avgED} min &middot; Asia ${avgAD} min.</div>
+    <div class="cg3c">
+      <div class="cc"><div class="ct">Europe &mdash; UK</div>
+        <div class="cline"><span>Active at launch</span><span>${f(euUA)}</span></div>
+        <div class="cline"><span>Contracts needed</span><span>${f(euC)}</span></div>
+        <div class="cline"><span>Annual sessions</span><span>${f(eAS)}</span></div>
+        <div class="cline"><span>Annual hours</span><span>${f(eAH)}</span></div>
+        <div class="cline"><span>Rate</span><span>$${UKR}/hr</span></div>
+        <div class="ctot"><span>Annual cost</span><span>${fm(eAH*UKR)}</span></div>
+        <div style="font-size:11px;color:var(--c400);margin-top:6px">${fm(eAH*UKR/12)}/month</div>
+      </div>
+      <div class="cc"><div class="ct">Asia &mdash; Philippines</div>
+        <div class="cline"><span>Active at launch</span><span>${f(asUA)}</span></div>
+        <div class="cline"><span>Contracts needed</span><span>${f(asC)}</span></div>
+        <div class="cline"><span>Annual sessions</span><span>${f(aAS)}</span></div>
+        <div class="cline"><span>Annual hours</span><span>${f(aAH)}</span></div>
+        <div class="cline"><span>Rate</span><span>$${ASR}/hr</span></div>
+        <div class="ctot"><span>Annual cost</span><span>${fm(aAH*ASR)}</span></div>
+        <div style="font-size:11px;color:var(--c400);margin-top:6px">${fm(aAH*ASR/12)}/month</div>
+      </div>
+      <div class="cc" style="border:2px solid var(--g2)"><div class="ct">Total international</div>
+        <div class="cline"><span>Active tutors</span><span>${f(euUA+asUA)}</span></div>
+        <div class="cline"><span>Total contracts</span><span>${f(euC+asC)}</span></div>
+        <div class="cline"><span>Annual hours</span><span>${f(eAH+aAH)}</span></div>
+        <div class="ctot"><span>Annual cost</span><span>${fm(tc)}</span></div>
+        <div style="font-size:11px;color:var(--c400);margin-top:6px">${fm(tc/12)}/month &middot; US excluded</div>
+      </div>
+    </div>`;
+  document.getElementById('t-notes').innerHTML=`
+    <table><thead><tr><th>Assumption</th><th>Current value</th><th>Source / rationale</th></tr></thead><tbody>
+      <tr><td>Utilization ceiling</td><td>${(uc*100).toFixed(0)}%</td><td>Fraction of US spare hours offered to DOW. Industry norm 70&ndash;80%.</td></tr>
+      <tr><td>Spanish scope</td><td>US + Europe only</td><td>Excluded from Asia &mdash; not relevant for Japan/South Korea.</td></tr>
+      <tr><td>EU/AS sessions/tutor/wk</td><td>${isw}/wk</td><td>Validated: median 2, mean 7.6, P75 = 7. Default = P75.</td></tr>
+      <tr><td>US capacity</td><td>Rem. hrs &times; ${(uc*100).toFixed(0)}% &times; ${(usAv*100).toFixed(0)}% &times; ${cc}&times; &divide; ${spt}</td><td>Tutor utilization import, net of 2025 demand.</td></tr>
+      <tr><td>Session duration</td><td>Per-subject (15&ndash;26 min)</td><td>Validated from 230K sessions. Affects cost only.</td></tr>
+      <tr><td>Concurrent chats</td><td>${cc}&times;</td><td>15.6% multitask, 26.6% sessions overlap.</td></tr>
+      <tr><td>Subjects per tutor</td><td>${spt}</td><td>Actual avg 3.43 from session history.</td></tr>
+      <tr><td>SAT / ACT &#9888;</td><td>19 min proxy</td><td>Not in session dataset. Treat headcount with caution.</td></tr>
+      <tr><td>Language splits (EU)</td><td>German 40% &middot; Italian 30%</td><td>Germany ~35K troops, Italy ~12K.</td></tr>
+      <tr><td>Language splits (Asia)</td><td>Japanese 60% &middot; Korean 40%</td><td>Japan ~54K troops, South Korea ~28K.</td></tr>
+      <tr><td>Language interest rate</td><td>${(li*100).toFixed(0)}%</td><td>Conservative default estimate.</td></tr>
+      <tr><td>Pre-launch attrition</td><td>${Math.round(att*100)}%</td><td>Tutors who drop before Nov 1.</td></tr>
+    </tbody></table>`;
+}
+function showTab(name,btn){
+  ['us','uk','as','tl','cost','notes'].forEach(t=>document.getElementById('t-'+t).style.display=t===name?'':'none');
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+['us-usage','int-usage','us-avail','util-ceil','intl-sess-wk','concurrent','spt','min-t','lang-int','att'].forEach(id=>
+  document.getElementById(id).addEventListener('change',render));
+render();
+</script>
+</body>
+</html>
