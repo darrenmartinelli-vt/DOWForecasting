@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model Methodology — DOW Forecast | Varsity Tutors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g1:#09634f;--g2:#38826e;--g3:#5fa48f;
+  --mint:#ecfce4;--mint2:#c8f0d4;
+  --c100:#f8f9fa;--c200:#eef0f2;--c300:#dee2e6;--c400:#9ca3af;
+  --c600:#4b5563;--c900:#111827;
+  --orange:#f97316;--amber:#fffbeb;--amber-border:#f59e0b;--amber-text:#92400e;
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --r:8px;--rl:12px;
+}
+body{font-family:var(--font);color:var(--c900);background:#f0f2f5;min-height:100vh;font-size:14px;line-height:1.6}
+
+/* NAV */
+.nav{background:var(--g1);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.nav-left{display:flex;align-items:center;gap:12px}
+.nav-back{color:rgba(255,255,255,.7);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.2);transition:all .15s}
+.nav-back:hover{background:rgba(255,255,255,.1);color:white}
+.nav-name{color:#fff;font-size:15px;font-weight:600;letter-spacing:-.3px;line-height:1.2}
+.nav-sub{color:rgba(255,255,255,.5);font-size:11px}
+.nav-badge{background:rgba(255,255,255,.15);color:#fff;font-size:11px;padding:5px 13px;border-radius:20px;font-weight:500;border:1px solid rgba(255,255,255,.25)}
+
+/* LAYOUT */
+.page{max-width:900px;margin:0 auto;padding:32px 20px 64px}
+
+/* PAGE HEADER */
+.ph{background:var(--g1);border-radius:var(--rl);padding:28px 32px;margin-bottom:24px;color:white}
+.ph-eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55);margin-bottom:8px}
+.ph-title{font-size:26px;font-weight:600;letter-spacing:-.3px;margin-bottom:8px}
+.ph-sub{font-size:14px;color:rgba(255,255,255,.65);line-height:1.5}
+.ph-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.ph-tag{font-size:11px;padding:4px 12px;border-radius:20px;font-weight:600;background:rgba(255,255,255,.15);color:white;border:1px solid rgba(255,255,255,.2)}
+
+/* TOC */
+.toc{background:white;border-radius:var(--rl);border:1px solid var(--c200);padding:20px 24px;margin-bottom:24px}
+.toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g1);margin-bottom:12px}
+.toc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.toc-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:6px;text-decoration:none;color:var(--c600);font-size:13px;font-weight:500;border:1px solid var(--c200);transition:all .12s;background:var(--c100)}
+.toc-item:hover{background:var(--mint);border-color:var(--g3);color:var(--g1)}
+.toc-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--g2);min-width:18px}
+
+/* SECTION */
+.section{background:white;border-radius:var(--rl);border:1px solid var(--c200);margin-bottom:16px;overflow:hidden}
+.sec-header{padding:16px 24px;background:var(--c100);border-bottom:1px solid var(--c200);display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none}
+.sec-num{font-family:var(--mono);font-size:12px;font-weight:600;color:white;background:var(--g2);width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-title{font-size:15px;font-weight:600;color:var(--c900)}
+.sec-chevron{margin-left:auto;color:var(--c400);transition:transform .2s;font-size:16px}
+.sec-header.open .sec-chevron{transform:rotate(180deg)}
+.sec-body{padding:24px;display:none}
+.sec-body.open{display:block}
+
+/* CONTENT */
+p{margin-bottom:12px;color:var(--c600);line-height:1.65}
+p:last-child{margin-bottom:0}
+h4{font-size:13px;font-weight:700;color:var(--g1);text-transform:uppercase;letter-spacing:.07em;margin:20px 0 8px}
+h4:first-child{margin-top:0}
+
+/* FORMULA BOX */
+.formula{background:var(--c100);border:1px solid var(--c200);border-left:3px solid var(--g2);border-radius:var(--r);padding:14px 16px;font-family:var(--mono);font-size:13px;color:var(--c900);margin:12px 0;line-height:1.8}
+.formula .label{font-family:var(--font);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--c400);display:block;margin-bottom:6px}
+
+/* CALLOUT */
+.callout{border-radius:var(--r);padding:12px 16px;font-size:13px;margin:14px 0;line-height:1.6}
+.c-warn{background:var(--amber);color:var(--amber-text);border-left:3px solid var(--amber-border)}
+.c-green{background:var(--mint);color:var(--g1);border-left:3px solid var(--g2)}
+.c-info{background:#eff6ff;color:#1e40af;border-left:3px solid #3b82f6}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:14px 0;border-radius:var(--r);border:1px solid var(--c200)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:10px;font-weight:700;color:var(--c400);padding:9px 12px;border-bottom:1px solid var(--c200);text-transform:uppercase;letter-spacing:.06em;background:var(--c100);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--c200);color:var(--c900);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--mint)}
+td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2px 6px;border-radius:4px}
+
+/* STATUS BADGES */
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;font-family:var(--mono)}
+.b-val{background:var(--mint);color:var(--g1)}
+.b-est{background:#fffbeb;color:#92400e}
+.b-unc{background:#fef2f2;color:#991b1b}
+
+/* STEP LIST */
+.steps{counter-reset:step;margin:12px 0}
+.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.step-num{background:var(--g1);color:white;font-size:12px;font-weight:700;font-family:var(--mono);min-width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-text{font-size:13px;color:var(--c600);line-height:1.6}
+.step-text strong{color:var(--c900)}
+
+/* DROPDOWN GRID */
+.dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.dd-item{background:var(--c100);border:1px solid var(--c200);border-radius:var(--r);padding:12px 14px}
+.dd-section{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g2);margin-bottom:4px}
+.dd-name{font-size:13px;font-weight:600;color:var(--c900);margin-bottom:4px}
+.dd-default{font-family:var(--mono);font-size:11px;color:var(--g2);margin-bottom:6px}
+.dd-desc{font-size:12px;color:var(--c600);line-height:1.5}
+
+/* FOOTER */
+.footer{text-align:center;color:var(--c400);font-size:12px;margin-top:32px;padding-top:20px;border-top:1px solid var(--c300)}
+.footer a{color:var(--g2);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+@media(max-width:700px){
+  .toc-grid{grid-template-columns:1fr}
+  .dd-grid{grid-template-columns:1fr}
+  .page{padding:16px 12px 48px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">&#8592; Back to Model</a>
+    <div style="width:1px;height:20px;background:rgba(255,255,255,.2);margin:0 4px"></div>
+    <div>
+      <div class="nav-name">Varsity Tutors</div>
+      <div class="nav-sub">Operations &amp; Forecasting</div>
+    </div>
+  </div>
+  <div class="nav-badge">Model Guide</div>
+</nav>
+
+<div class="page">
+
+<!-- PAGE HEADER -->
+<div class="ph">
+  <div class="ph-eyebrow">Documentation</div>
+  <div class="ph-title">DOW Forecast Model &mdash; Methodology &amp; Guide</div>
+  <div class="ph-sub">Everything you need to understand how the model works, what the numbers mean, what has been validated from real data, and how to use the interactive controls.</div>
+  <div class="ph-tags">
+    <span class="ph-tag">230,602 sessions analyzed</span>
+    <span class="ph-tag">720 days of data</span>
+    <span class="ph-tag">29 subjects</span>
+    <span class="ph-tag">Data: March 2026</span>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-title">Table of contents</div>
+  <div class="toc-grid">
+    <a href="#s1" class="toc-item"><span class="toc-num">01</span>Program overview</a>
+    <a href="#s2" class="toc-item"><span class="toc-num">02</span>How demand is calculated</a>
+    <a href="#s3" class="toc-item"><span class="toc-num">03</span>How capacity is calculated</a>
+    <a href="#s4" class="toc-item"><span class="toc-num">04</span>Headcount &amp; contract math</a>
+    <a href="#s5" class="toc-item"><span class="toc-num">05</span>Session duration</a>
+    <a href="#s6" class="toc-item"><span class="toc-num">06</span>Cost calculation</a>
+    <a href="#s7" class="toc-item"><span class="toc-num">07</span>Contracting timeline</a>
+    <a href="#s8" class="toc-item"><span class="toc-num">08</span>Validated vs assumed</a>
+    <a href="#s9" class="toc-item"><span class="toc-num">09</span>Dropdown controls reference</a>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section" id="s1">
+  <div class="sec-header open" onclick="toggle(this)">
+    <div class="sec-num">1</div>
+    <div class="sec-title">Program Overview</div>
+    <span class="sec-chevron">&#8964;</span>
+  </div>
+  <div class="sec-body open">
+    <p>The DOW (Department of Defense) program extends Varsity Tutors live chat tutoring to military-connected families across three regions. This model forecasts how many tutors need to be contracted — by region — to handle projected demand at the November 1, 2026 launch date.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Region</th><th>Student population</th><th>Share</th><th>Tutor source</th><th>Subject scope</th></tr></thead>
+        <tbody>
+          <tr><td><strong>United States</strong></td><td>888,000</td><td>95.2%</td><td>Existing US pool</td><td>All 29 subjects</td></tr>
+          <tr><td><strong>Europe (UK)</strong></td><td>25,000</td><td>2.7%</td><td>New UK hires</td><td>All 29 excl. Japanese &amp; Korean</td></tr>
+          <tr><td><strong>Asia (Philippines)</strong></td><td>20,000</td><td>2.1%</td><td>New PH hires</td><td>All 29 excl. Spanish, German &amp; Italian</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The 29 subjects span six groups: Elementary (5), Middle School (5), HS Math (5), HS Humanities (2), HS Science (4), Test Prep (2), Special Ed (1), and Languages (5 — with region-specific availability).</p>
+    <div class="callout c-green"><strong>Spanish</strong> is available in the US and Europe only — excluded from Asia as it is not relevant for military families based in Japan or South Korea.</div>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section" id="s2">
+  <div class="sec-header" onclick="toggle(this)">
+    <div class="sec-num">2</div>
+    <div class="sec-title">How Demand Is Calculated</div>
+    <span class="sec-chevron">&#8964;</span>
+  </div>
+  <div class="sec-body">
+    <p>For every subject and every region, the model calculates how many live chat sessions per week will be needed at launch.</p>
+    <div class="formula">
+      <span class="label">Core demand formula</span>
+      Weekly sessions = Student population &times; Usage rate &times; Annual sessions/student &times; Subject weight &divide; 52
+    </div>
+
+    <h4>Subject demand weights</h4>
+    <p>Each subject's share of total demand is derived from its share of instant video (IV) requests across the platform — 38,000 IV requests across all 29 subjects. This is the best available proxy for live chat demand mix, since live chat and instant video serve similar on-demand needs.</p>
+
+    <h4>Language subjects</h4>
+    <p>Language subjects apply an additional country-weight filter, since not all students in a region will want the same language. Population splits are based on US troop presence:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Language</th><th>Region</th><th>Country weight</th><th>Basis</th></tr></thead>
+        <tbody>
+          <tr><td>German</td><td>Europe</td><td>40% of EU students</td><td>Germany ~35,000 US troops (largest EU base)</td></tr>
+          <tr><td>Italian</td><td>Europe</td><td>30% of EU students</td><td>Italy ~12,000 US troops</td></tr>
+          <tr><td>Japanese</td><td>Asia</td><td>60% of Asia students</td><td>Japan ~54,000 US troops (largest Asia base)</td></tr>
+          <tr><td>Korean</td><td>Asia</td><td>40% of Asia students</td><td>South Korea ~28,000 US troops</td></tr>
+          <tr><td>Spanish</td><td>US + Europe</td><td>100% of eligible students</td><td>Widely relevant; excluded from Asia</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Language demand is then further filtered by the <strong>language interest rate</strong> (default 25%) — the estimated fraction of eligible-country students who actually want language tutoring.</p>
+
+    <h4>SAT &amp; ACT — international adjustment</h4>
+    <p>Overseas demand for SAT and ACT is set to 60% of the US weight per student. DoDEA (Department of Defense Education Activity) explicitly covers SAT/ACT fees for overseas military families and offers exam administration on base.</p>
+
+    <div class="callout c-warn"><strong>&#9888; SAT and ACT data gap:</strong> Neither subject was observed in the 230,602-session dataset (39 subjects were present). They may route through a different channel than live chat. Demand estimates are retained in the model but treat headcount for these subjects with caution.</div>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section" id="s3">
+  <div class="sec-header" onclick="toggle(this)">
+    <div class="sec-num">3</div>
+    <div class="sec-title">How Tutor Capacity Is Calculated</div>
+    <span class="sec-chevron">&#8964;</span>
+  </div>
+  <div class="sec-body">
+    <h4>US &mdash; remaining hours method</h4>
+    <p>The US uses actual data from the tutor utilization import rather than a theoretical capacity estimate. The key value is <strong>remaining hours per week</strong> per subject — the difference between tutors' desired hours and their currently utilized hours. This is real spare time in the existing pool, already net of all existing 2025 student demand.</p>
+    <div class="formula">
+      <span class="label">US spare capacity formula</span>
+      Spare sessions/wk = Remaining hours/wk &times; Utilization ceiling &times; % willing &times; Concurrent multiplier &divide; Subjects per tutor
+      <br><br>
+      &divide; (session duration in hours) to convert hours &rarr; sessions
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Remaining hours/wk</strong> — from Tutor Utilization import (week of 3/22/26). Already net of existing demand.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Utilization ceiling (default 75%)</strong> — only this fraction of remaining hours is offered to DOW. The other 25% is held back as a buffer for demand spikes, tutor no-shows, and organic platform growth. Industry norm for on-demand platforms: 70&ndash;80%. Running at 100% causes stockouts when demand surges.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>% willing (default 60%)</strong> — US tutors choose whether to accept DOW work. UK/PH tutors are 100% available since they are contracted exclusively for DOW.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Concurrent multiplier (default 1.2&times;)</strong> — live chat tutors can handle multiple sessions simultaneously. Validated from data: 15.6% of tutors ran concurrent sessions, 26.6% of sessions overlapped. 1.2&times; reflects the average effective throughput uplift across the pool.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Subjects per tutor (default 4)</strong> — divides the total spare hours by the average number of subjects each tutor covers, to avoid double-counting the same tutor across multiple subject rows. Validated: actual average 3.43 subjects/tutor from session history.</div></div>
+    </div>
+
+    <h4>Europe (UK) and Asia (Philippines) &mdash; sessions per tutor per week</h4>
+    <p>These regions have zero existing tutors, so there is no utilization data to draw from. Capacity is set directly via the <strong>EU/AS sessions per tutor per week</strong> dropdown.</p>
+    <div class="formula">
+      <span class="label">EU/AS capacity formula</span>
+      Effective capacity per tutor/wk = Sessions per tutor/wk &times; Concurrent multiplier
+      <br>
+      Tutors needed per subject = Weekly demand &divide; Effective capacity per tutor/wk
+    </div>
+    <p>The utilization ceiling <em>does not apply</em> to EU/AS — these tutors are contracted specifically and exclusively for DOW, so their capacity is sized directly to demand rather than carved out of existing availability.</p>
+
+    <div class="callout c-warn"><strong>Key difference:</strong> US uses real remaining hours (bottom-up, from actual data). EU/AS uses a top-down sessions-per-tutor assumption because no utilization data exists yet. The utilization ceiling is the most impactful supply-side lever for US headcount — changing it from 75% to 100% can swing US contracts from hundreds to zero.</div>
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section" id="s4">
+  <div class="sec-header" onclick="toggle(this)">
+    <div class="sec-num">4</div>
+    <div class="sec-title">Headcount &amp; Contracting Math</div>
+    <span class="sec-chevron">&#8964;</span>
+  </div>
+  <div class="sec-body">
+    <div class="callout c-info"><strong>Important:</strong> The "Subject-slots needed" column in the US table shows <em>tutor-subject assignments</em>, not unique people. One tutor covering 4 subjects counts as 4 slots. The summary contract count in the header card is the final unique-person number after deduplication and attrition gross-up.</div>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Subject-slots needed per subject</strong> = Gap sessions/wk &divide; effective sessions per tutor/wk. Minimum floor of 1 tutor per subject (configurable). These are <em>slots</em>, not people.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Unique active tutors</strong> = Total subject-slots &divide; avg subjects per tutor. This deduplicates — a tutor covering 4 subjects fills 4 slots but is only 1 person.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Contracts to place</strong> = Unique active tutors &divide; (1 &minus; attrition rate). Grosses up for the expected dropout rate between contracting and Nov 1 launch. Default 20%.</div></div>
+    </div>
+
+    <div class="formula">
+      <span class="label">Summary reconciliation (example at base settings)</span>
+      Total subject-slots &divide; 4 subjects/tutor = Unique active tutors
+      <br>
+      Unique active tutors &divide; (1 &minus; 20%) = Contracts to place
+    </div>
+
+    <p>Approval rate (the funnel from applicant to contracted tutor) is <em>not</em> included — that is the supply team's operational responsibility. The model outputs the number of successful contracts needed, not the number of applications to generate.</p>
+  </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section" id="s5">
+  <div class="sec-header" onclick="toggle(this)">
+    <div class="sec-num">5</div>
+    <div class="sec-title">Session Duration</div>
+    <span class="sec-chevron">&#8964;</span>
+  </div>
+  <div class="sec-body">
+    <p>Session duration affects <strong>cost only</strong> — not headcount. The model uses per-subject actual durations validated from 230,602 sessions over 720 days.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Subject group</th><th>Avg duration</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>HS Science / Physics / Chemistry</td><td>24&ndash;26 min</td><td><span class="badge b-val">Validated</span></td></tr>
+          <tr><td>HS Math (Algebra 2, Geometry, Pre-Calc, HS Writing)</td><td>22&ndash;24 min</td><td><span class="badge b-val">Validated</span></td></tr>
+          <tr><td>HS English, Biology</td><td>22&ndash;23 min</td><td><span class="badge b-val">Validated</span></td></tr>
+          <tr><td>Algebra, Pre-Algebra</td><td>~20 min</td><td><span class="badge b-val">Validated</span></td></tr>
+          <tr><td>All MS subjects</td><td>15&ndash;17 min</td><td><span class="badge b-val">Validated</span></td></tr>
+          <tr><td>All ES subjects</td><td>15&ndash;17 min</td><td><span class="badge b-val">Validated</span></td></tr>
+          <tr><td>SAT, ACT, Languages, Exec. Func.</td><td>19 min (proxy)</td><td><span class="badge b-est">Estimated</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The platform-wide weighted average for DOW subjects is <strong>19.2 min</strong> (median 14.8 min). The 8 subjects without session data use the platform average as a proxy. SAT/ACT sessions may run longer given the complexity of test prep — flag for revision once actual data is available.</p>
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section" id="s6">
+  <div class="sec-header" onclick="toggle(this)">
+    <div class="sec-num">6</div>
+    <div class="sec-title">Cost Calculation</div>
+    <span class="sec-chevron">&#8964;</span>
+  </div>
+  <div class="sec-body">
+    <div class="formula">
+      <span class="label">Cost formula</span>
+      Annual cost = Annual sessions &times; Session duration (hours) &times; Tutor rate ($/hr)
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Region</th><th>Rate</th><th>Basis</th></tr></thead>
+        <tbody>
+          <tr><td><strong>UK (Europe)</strong></td><td>$18/hr</td><td>Competitive UK market rate; above minimum wage with quality targeting</td></tr>
+          <tr><td><strong>Philippines (Asia)</strong></td><td>$10/hr</td><td>Top-tier Philippines rate; competitive for quality English-proficient tutors</td></tr>
+          <tr><td><strong>US</strong></td><td>No incremental cost</td><td>Existing tutors on existing pay — DOW is additive work, not a new expense</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Cost scales with demand (usage rate and student population), not headcount. Tutors are paid per session, not per hour of availability. The Cost tab in the model shows a weighted average session duration across all subjects in each region, since HS subjects run longer than ES/MS subjects.</p>
+  </div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section" id="s7">
+  <div class="sec-header" onclick="toggle(this)">
+    <div class="sec-num">7</div>
+    <div class="sec-title">Contracting Timeline</div>
+    <span class="sec-chevron">&#8964;</span>
+  </div>
+  <div class="sec-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Region</th><th>Window</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr><td><strong>UK (Europe)</strong></td><td>April &ndash; October 2026</td><td>No existing pipeline. 7 months needed to build sourcing, screening, and onboarding from scratch. Feb&ndash;Mar used for setup.</td></tr>
+          <tr><td><strong>Philippines (Asia)</strong></td><td>April &ndash; October 2026</td><td>Same as UK &mdash; new country, new pipeline. Requires ICA work, payment systems, and legal review.</td></tr>
+          <tr><td><strong>US</strong></td><td>July &ndash; September 2026</td><td>Existing infrastructure. 3-month window is sufficient for smaller volumes typically needed.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>US timing is grounded in real monthly run rates per subject from March 2026 contracting data. SAT (10/mo) and ACT (5/mo) have the lowest run rates — if US contracts are required for these subjects, hiring must start earliest.</p>
+    <p>UK/PH monthly pace is set by dividing total contracts evenly across the 7-month window since no historical international run rate data exists.</p>
+  </div>
+</div>
+
+<!-- SECTION 8 -->
+<div class="section" id="s8">
+  <div class="sec-header" onclick="toggle(this)">
+    <div class="sec-num">8</div>
+    <div class="sec-title">What Is Validated vs Assumed</div>
+    <span class="sec-chevron">&#8964;</span>
+  </div>
+  <div class="sec-body">
+    <p>
+      <span class="badge b-val">Validated</span> = Directly measured from actual data &nbsp;&nbsp;
+      <span class="badge b-est">Estimated</span> = Reasonable assumption with moderate confidence &nbsp;&nbsp;
+      <span class="badge b-unc">Uncertain</span> = Low confidence, use with caution
+    </p>
+    <br>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Assumption</th><th>Status</th><th>Value / source</th></tr></thead>
+        <tbody>
+          <tr><td>Session duration per subject</td><td><span class="badge b-val">Validated</span></td><td>Measured from 230,602 actual sessions over 720 days</td></tr>
+          <tr><td>Avg concurrent chats (1.2&times;)</td><td><span class="badge b-val">Validated</span></td><td>15.6% of tutors multitask; 26.6% of sessions overlap — from session data</td></tr>
+          <tr><td>Subjects per tutor (avg 4)</td><td><span class="badge b-val">Validated</span></td><td>Actual avg 3.43 from session history; 4 used as planning default</td></tr>
+          <tr><td>Sessions/wk per active tutor (P75 = 7)</td><td><span class="badge b-val">Validated</span></td><td>From session data: median 2, mean 7.6, P75 = 7 sessions/active week</td></tr>
+          <tr><td>US remaining hours (spare capacity)</td><td><span class="badge b-val">Validated</span></td><td>From live tutor utilization import (desired &minus; utilized), week of 3/22/26</td></tr>
+          <tr><td>Troop presence by country</td><td><span class="badge b-val">Validated</span></td><td>Germany ~35K, Italy ~12K, Japan ~54K, South Korea ~28K &mdash; US DoD public data</td></tr>
+          <tr><td>DoDEA curriculum is US-standard</td><td><span class="badge b-val">Validated</span></td><td>DoDEA uses College and Career Readiness Standards in all regions</td></tr>
+          <tr><td>SAT/ACT offered overseas</td><td><span class="badge b-val">Validated</span></td><td>DoDEA explicitly covers SAT/ACT fees for overseas families</td></tr>
+          <tr><td>Usage rate (6.5% default)</td><td><span class="badge b-est">Estimated</span></td><td>Reasonable estimate based on prior DOW program analysis. Track in first weeks post-launch.</td></tr>
+          <tr><td>Language interest rate (25%)</td><td><span class="badge b-est">Estimated</span></td><td>Conservative estimate. Military families may be more motivated than average.</td></tr>
+          <tr><td>EU/AS sessions/wk (7 default)</td><td><span class="badge b-est">Estimated</span></td><td>Based on US actual P75 — may not reflect newly contracted international tutors.</td></tr>
+          <tr><td>Utilization ceiling (75%)</td><td><span class="badge b-est">Estimated</span></td><td>Industry norm. Reflects standard buffer practice for on-demand platforms.</td></tr>
+          <tr><td>Pre-launch attrition (20%)</td><td><span class="badge b-est">Estimated</span></td><td>No historical international data; US baseline ~15%, higher assumed for new markets.</td></tr>
+          <tr><td>SAT/ACT demand estimates</td><td><span class="badge b-unc">Uncertain</span></td><td>Not observed in session data. May route differently. Headcount uncertain.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 9 -->
+<div class="section" id="s9">
+  <div class="sec-header" onclick="toggle(this)">
+    <div class="sec-num">9</div>
+    <div class="sec-title">Dropdown Controls Reference</div>
+    <span class="sec-chevron">&#8964;</span>
+  </div>
+  <div class="sec-body">
+    <p>All controls update every output in real time. Changes to demand inputs affect headcount and cost equally. Changes to supply inputs primarily affect headcount; cost is only affected by concurrent chats (via headcount) and session duration (directly).</p>
+    <div class="dd-grid">
+      <div class="dd-item">
+        <div class="dd-section">Demand</div>
+        <div class="dd-name">US usage rate</div>
+        <div class="dd-default">Default: 6.5% &middot; 13 sessions/yr</div>
+        <div class="dd-desc">Fraction of 888K US DOW students who use live chat, and how many times per year. Scales total US session demand proportionally.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">Demand</div>
+        <div class="dd-name">Europe &amp; Asia usage rate</div>
+        <div class="dd-default">Default: 6.5% &middot; 13 sessions/yr</div>
+        <div class="dd-desc">Same as US but applied to international populations. Can be set lower to reflect slower initial adoption in a new market.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">Demand</div>
+        <div class="dd-name">Language interest rate</div>
+        <div class="dd-default">Default: 25%</div>
+        <div class="dd-desc">Fraction of eligible-country students who want language tutoring. Applied on top of usage rate and country-weight. 25% is conservative.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">Supply</div>
+        <div class="dd-name">US tutors willing to take live chat</div>
+        <div class="dd-default">Default: 60%</div>
+        <div class="dd-desc">Existing US tutors who opt in to DOW work. UK/PH tutors are always 100% (contracted exclusively for DOW). Increase if active outreach is planned.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">Supply</div>
+        <div class="dd-name">Max utilization ceiling (US)</div>
+        <div class="dd-default">Default: 75% — recommended</div>
+        <div class="dd-desc">Caps the fraction of US spare hours offered to DOW. The remaining % is a buffer for demand spikes and tutor dropoff. Industry norm: 70&ndash;80%. This is the most impactful US lever — moving from 75% to 100% can eliminate US contracts entirely at base demand.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">Supply</div>
+        <div class="dd-name">EU/AS sessions per tutor per week</div>
+        <div class="dd-default">Default: 7/wk (P75 from actual data)</div>
+        <div class="dd-desc">How many sessions each UK or PH tutor handles per week. Validated from US data: median is 2, mean is 7.6, P75 is 7. Setting this lower is more conservative; higher assumes more active tutors.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">Supply</div>
+        <div class="dd-name">Avg concurrent chats per tutor</div>
+        <div class="dd-default">Default: 1.2&times; (validated)</div>
+        <div class="dd-desc">Multiplier on effective tutor throughput. 1.2&times; reflects the ~26% session overlap rate observed in actual data. Applied to both US spare capacity and EU/AS capacity.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">Supply</div>
+        <div class="dd-name">Avg DOW subjects per tutor</div>
+        <div class="dd-default">Default: 4 (validated avg: 3.43)</div>
+        <div class="dd-desc">Each tutor covers this many subjects. Deduplicates the subject-slot count into unique people. Validated from session history — actual average is 3.43 subjects/tutor.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">Supply</div>
+        <div class="dd-name">Pre-launch attrition</div>
+        <div class="dd-default">Default: 20%</div>
+        <div class="dd-desc">Fraction of contracted tutors who drop out before Nov 1 launch. Contracts are grossed up to ensure the active pool target is still met despite attrition.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">Supply</div>
+        <div class="dd-name">Min tutors per subject</div>
+        <div class="dd-default">Default: 1</div>
+        <div class="dd-desc">Floor on tutors per subject. Prevents any subject from showing zero even if modeled demand is very small. Useful for ensuring baseline coverage.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BACK TO MODEL -->
+<div style="text-align:center;margin-top:28px">
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--g1);color:white;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;box-shadow:0 2px 8px rgba(9,99,79,.3)">
+    &#8592; Back to the model
+  </a>
+</div>
+
+<div class="footer">
+  Varsity Tutors &middot; Operations &amp; Forecasting &middot; Data as of March 2026 &middot;
+  <a href="index.html">DOW Forecast Model</a>
+</div>
+
+</div>
+
+<script>
+function toggle(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// Smooth scroll to anchor on TOC click
+document.querySelectorAll('.toc-item').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    // Open section
+    const sh = target.querySelector('.sec-header');
+    const sb = target.querySelector('.sec-body');
+    if (!sh.classList.contains('open')) { sh.classList.add('open'); sb.classList.add('open'); }
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>

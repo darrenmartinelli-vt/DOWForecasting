@@ -106,7 +106,13 @@ tbody tr:hover td{background:var(--mint)}
       <div class="nav-sub">Operations &amp; Forecasting</div>
     </div>
   </div>
-  <div class="nav-badge">DOW Program &middot; Nov 2026 Launch</div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <a href="methodology.html" style="color:rgba(255,255,255,.75);font-size:12px;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;border:1px solid rgba(255,255,255,.2);transition:all .15s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.75)'">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Model Guide
+    </a>
+    <div class="nav-badge">DOW Program &middot; Nov 2026 Launch</div>
+  </div>
 </nav>
 
 <div class="page">
@@ -120,6 +126,17 @@ tbody tr:hover td{background:var(--mint)}
     <span class="tg tg-g">230K sessions analyzed</span>
     <span class="tg tg-n">US &middot; UK &middot; Philippines</span>
   </div>
+</div>
+
+<div style="background:#ecfce4;border:1px solid #c8f0d4;border-radius:8px;padding:10px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+  <div style="display:flex;align-items:center;gap:10px">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38826e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span style="font-size:13px;color:#09634f;font-weight:500">All inputs update results in real time. Adjust dropdowns to explore scenarios.</span>
+  </div>
+  <a href="methodology.html" style="font-size:12px;font-weight:600;color:#09634f;text-decoration:none;display:flex;align-items:center;gap:5px;white-space:nowrap;padding:5px 12px;background:white;border:1px solid #c8f0d4;border-radius:6px">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Model Guide &amp; Methodology &#8594;
+  </a>
 </div>
 
 <div class="panel">
@@ -353,7 +370,10 @@ function render(){
   const uS=[...rows].filter(r=>inUS(r)).sort((a,b)=>b.uD-a.uD);
   document.getElementById('t-us').innerHTML=`
     <div class="co ${ok?'co-g':'co-r'}">Weekly DOW demand: ${f(tUD)} sessions &middot; Spare at ${(uc*100).toFixed(0)}% ceiling: ${f(tUSp)} sessions/wk &middot; ${ok?'No new US contracts needed':'Gap &mdash; '+f(usC)+' contracts needed (incl. '+Math.round(att*100)+'% attrition)'}</div>
-    <table><thead><tr><th>Subject</th><th>Group</th><th>Regions</th><th>Duration</th><th>DOW demand/wk</th><th>Spare (${(uc*100).toFixed(0)}% ceiling)</th><th>Gap</th><th>New tutors</th></tr></thead>
+    <div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#92400e">
+      <strong>How the summary contract count is derived:</strong> The last column shows <em>subject-slots</em> (tutor-subject assignments needed), not unique people. One tutor covers ${spt} subjects, so: ${f(R.tUN)} total subject-slots &divide; ${spt} subjects/tutor = ${f(R.usUA)} active tutors needed &rarr; &divide; (1&minus;${Math.round(att*100)}% attrition) = <strong>${f(usC)} contracts</strong>.
+    </div>
+    <table><thead><tr><th>Subject</th><th>Group</th><th>Regions</th><th>Duration</th><th>DOW demand/wk</th><th>Spare (${(uc*100).toFixed(0)}% ceiling)</th><th>Gap</th><th>Subject-slots needed</th></tr></thead>
     <tbody>${uS.map(r=>`<tr>
       <td style="font-weight:500">${r.n}${r.nd?'<span style="color:#f97316;font-size:10px;margin-left:4px">&#9888;</span>':''}</td>
       <td>${gbadge(r.g)}</td>
@@ -414,7 +434,7 @@ function render(){
     </div>
     ${BARS.map(b=>`<div class="tl-row"><div class="tl-label">${b.lb}</div><div class="tl-bars">${Array.from({length:10},(_,i)=>i>=b.s&&i<=b.e?`<div class="tl-bar" style="background:${b.c}">${i===b.s?b.t:''}</div>`:`<div class="tl-e"></div>`).join('')}</div></div>`).join('')}
     ${uPace.length>0?`<div class="sec" style="margin-top:1.5rem">US subject pacing check</div>
-    <table><thead><tr><th>Subject</th><th>New tutors</th><th>Monthly run rate</th><th>Months needed</th><th>Start by</th></tr></thead>
+    <table><thead><tr><th>Subject</th><th>Subject-slots</th><th>Monthly run rate</th><th>Months needed</th><th>Start by</th></tr></thead>
     <tbody>${uPace.map(r=>`<tr><td style="font-weight:500">${r.n}</td><td>${r.need}</td><td style="font-family:var(--mono)">${r.rr}/mo</td><td><span class="${r.risk}">${r.m} mo</span></td><td>${r.start}</td></tr>`).join('')}</tbody></table>`:''}
     <div class="note">All counts include ${Math.round(att*100)}% attrition buffer. US run rates from March 2026 actuals.</div>`;
   const avgED=eAS>0?(eAH/eAS*60).toFixed(1):'&mdash;';
