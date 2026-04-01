@@ -511,7 +511,7 @@ function render(){
 
   // Summary metrics
   document.getElementById('summary').innerHTML=
-    '<div class="met-row">'      +'<div class="met-row-label">US</div>'      +'<div class="met-row-tiles">'        +'<div class="met">'          +'<div class="ml">Tutor-subject combos</div>'          +'<div class="mv" style="color:var(--g1)">'+f(tUN)+'</div>'          +'<div class="ms">Full &middot; Nov 1: '+f(tUN_L)+'</div>'        +'</div>'        +'<div class="met '+(ok?'':'hi')+'">'          +'<div class="ml">Contracts (full)</div>'          +'<div class="mv" style="color:'+(ok?'var(--g1)':'var(--orange)')+'">'+( ok?'None':'+'+f(usC))+'</div>'          +'<div class="ms">Peak-sized &middot; '+(usPen*100).toFixed(0)+'% &times; '+usFreq+' = '+effRate+' sess/student</div>'        +'</div>'        +'<div class="met '+(okL?'':'hi')+'" style="border-style:dashed">'          +'<div class="ml">Needed by Nov 1</div>'          +'<div class="mv" style="color:'+(okL?'var(--g1)':'var(--orange)')+'">'+( okL?'None':'+'+f(usC_L))+'</div>'          +'<div class="ms">'+( rampPct*100).toFixed(0)+'% adoption &middot; balance by Jan</div>'        +'</div>'      +'</div>'    +'</div>'    +'<div class="met-row">'      +'<div class="met-row-label">UK<br>(Europe)</div>'      +'<div class="met-row-tiles">'        +'<div class="met">'          +'<div class="ml">Tutor-subject combos</div>'          +'<div class="mv" style="color:var(--g1)">'+f(tES)+'</div>'          +'<div class="ms">Full &middot; Nov 1: '+f(tES_L)+'</div>'        +'</div>'        +'<div class="met">'          +'<div class="ml">Contracts (full)</div>'          +'<div class="mv">+'+f(euC)+'</div>'          +'<div class="ms">'+f(euUA)+' unique tutors</div>'        +'</div>'        +'<div class="met" style="border-style:dashed">'          +'<div class="ml">Needed by Nov 1</div>'          +'<div class="mv">+'+f(euC_L)+'</div>'          +'<div class="ms">'+f(euUA_L)+' unique tutors</div>'        +'</div>'        +'<div class="met">'          +'<div class="ml">UK annual cost</div>'          +'<div class="mv" style="color:var(--g1)">'+fm(eAH*UKR)+'</div>'          +'<div class="ms">'+fm(eAH*UKR/12)+'/month</div>'        +'</div>'      +'</div>'    +'</div>'    +'<div class="met-row">'      +'<div class="met-row-label">PH<br>(Asia)</div>'      +'<div class="met-row-tiles">'        +'<div class="met">'          +'<div class="ml">Tutor-subject combos</div>'          +'<div class="mv" style="color:var(--g1)">'+f(tAS2)+'</div>'          +'<div class="ms">Full &middot; Nov 1: '+f(tAS2_L)+'</div>'        +'</div>'        +'<div class="met">'          +'<div class="ml">Contracts (full)</div>'          +'<div class="mv">+'+f(asC)+'</div>'          +'<div class="ms">'+f(asUA)+' unique tutors</div>'        +'</div>'        +'<div class="met" style="border-style:dashed">'          +'<div class="ml">Needed by Nov 1</div>'          +'<div class="mv">+'+f(asC_L)+'</div>'          +'<div class="ms">'+f(asUA_L)+' unique tutors</div>'        +'</div>'        +'<div class="met">'          +'<div class="ml">PH annual cost</div>'          +'<div class="mv" style="color:var(--g1)">'+fm(aAH*ASR)+'</div>'          +'<div class="ms">'+fm(aAH*ASR/12)+'/month</div>'        +'</div>'      +'</div>'    +'</div>';
+    '<div class="met-row">'      +'<div class="met-row-label">US</div>'      +'<div class="met-row-tiles">'        +'<div class="met">'          +'<div class="ml">Tutor-subject combos</div>'          +'<div class="mv" style="color:var(--g1)">'+f(tUN)+'</div>'          +'<div class="ms">Full &middot; Nov 1: '+f(tUN_L)+'</div>'        +'</div>'        +'<div class="met '+(ok?'':'hi')+'">'          +'<div class="ml">Contracts (full)</div>'          +'<div class="mv" style="color:'+(ok?'var(--g1)':'var(--orange)')+'">'+( ok?'None':'+'+f(usC))+'</div>'          +'<div class="ms">Peak-sized &middot; '+(usPen*100).toFixed(0)+'% &times; '+usFreq+' = '+effRate+' sess/student</div>'        +'</div>'        +'<div class="met '+(okL?'':'hi')+'" style="border-style:dashed">'          +'<div class="ml">Needed by Nov 1</div>'          +'<div class="mv" style="color:'+(okL?'var(--g1)':'var(--orange)')+'">'+( okL?'None':'+'+f(usC_L))+'</div>'          +'<div class="ms">'+( rampPct*100).toFixed(0)+'% adoption &middot; balance by Jan</div>'        +'</div>'      +'</div>'    +'</div>'    +'<div class="met-row">'      +'<div class="met-row-label">UK<br>(Europe)</div>'      +'<div class="met-row-tiles">'        +'<div class="met">'          +'<div class="ml">Tutor-subject combos</div>'          +'<div class="mv" style="color:var(--g1)">'+f(tES)+'</div>'          +'<div class="ms">Full &middot; Nov 1: '+f(tES_L)+'</div>'        +'</div>'        +'<div class="met">'          +'<div class="ml">Contracts (full)</div>'          +'<div class="mv">+'+f(euC)+'</div>'        +'</div>'        +'<div class="met" style="border-style:dashed">'          +'<div class="ml">Needed by Nov 1</div>'          +'<div class="mv">+'+f(euC_L)+'</div>'        +'</div>'        +'<div class="met">'          +'<div class="ml">UK annual cost</div>'          +'<div class="mv" style="color:var(--g1)">'+fm(eAH*UKR)+'</div>'          +'<div class="ms">'+fm(eAH*UKR/12)+'/month</div>'        +'</div>'      +'</div>'    +'</div>'    +'<div class="met-row">'      +'<div class="met-row-label">PH<br>(Asia)</div>'      +'<div class="met-row-tiles">'        +'<div class="met">'          +'<div class="ml">Tutor-subject combos</div>'          +'<div class="mv" style="color:var(--g1)">'+f(tAS2)+'</div>'          +'<div class="ms">Full &middot; Nov 1: '+f(tAS2_L)+'</div>'        +'</div>'        +'<div class="met">'          +'<div class="ml">Contracts (full)</div>'          +'<div class="mv">+'+f(asC)+'</div>'        +'</div>'        +'<div class="met" style="border-style:dashed">'          +'<div class="ml">Needed by Nov 1</div>'          +'<div class="mv">+'+f(asC_L)+'</div>'        +'</div>'        +'<div class="met">'          +'<div class="ml">PH annual cost</div>'          +'<div class="mv" style="color:var(--g1)">'+fm(aAH*ASR)+'</div>'          +'<div class="ms">'+fm(aAH*ASR/12)+'/month</div>'        +'</div>'      +'</div>'    +'</div>';
 
   var uS=[].concat(rows).filter(function(r){return inUS(r);}).sort(function(a,b){return b.uD-a.uD;});
   var usRows='';
@@ -600,12 +600,31 @@ function render(){
   });
   var riskClass=function(m){return m===null?'bg-r':m>=4?'bg-r':m>=3?'bg-o':'bg-g';};
 
+  // Dynamic US hire start: grid is Feb(0)..Nov(9), Jul=5, Sep=7
+  // Find the worst-case months needed across all subjects at 100% run rate
+  var maxMosNeeded=0;
+  var criticalSubj='';
+  usBySubj.forEach(function(r){
+    if(r.mos100!==null && r.mos100>maxMosNeeded){maxMosNeeded=r.mos100;criticalSubj=r.n;}
+  });
+  // Latest safe start: Nov(9) minus months needed = required start index in grid
+  // (grid ends at Nov=9, so if 3 months needed, start by Jul=index 6 before Nov)
+  // Grid: 0=Feb,1=Mar,2=Apr,3=May,4=Jun,5=Jul,6=Aug,7=Sep,8=Oct,9=Nov
+  // 3 months = Jul(5) start to hit Sep(7) end before Nov(9) launch -- wait, hiring ends before launch
+  // Hiring window ends Sep(7), so: requiredStart = 7 - maxMosNeeded + 1 = 8 - maxMosNeeded
+  var usHireStart = usC>0 ? (maxMosNeeded>0 ? Math.max(0, 7-maxMosNeeded) : 5) : 9;
+  var usHireEnd = usC>0 ? 7 : 9;
+  var usHireTight = usHireStart < 5; // before Jul = outside standard window
+  var usHireColor = usHireTight ? '#ef4444' : '#5fa48f';
+  var usHireLabel = usHireTight ? '&#9888; Must start ' + ['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'][usHireStart] : '';
+  var usHireT = R.tUN_L>0 ? (usHireTight?'&#9888; ':'')+'+'+f(R.tUN_L)+' combos' : 'None needed';
+
   var BARS=[
     {lb:'UK hire',    s:5,e:7,c:'#09634f', t:'+'+f(R.tES_L)+' combos (Nov 1)'},
     {lb:'UK stage 2', s:8,e:9,c:'#38826e', t:R.tES-R.tES_L>0?'+'+f(R.tES-R.tES_L)+' Jan':''},
     {lb:'PH hire',    s:5,e:7,c:'#d97706', t:'+'+f(R.tAS2_L)+' combos (Nov 1)'},
     {lb:'PH stage 2', s:8,e:9,c:'#f59e0b', t:R.tAS2-R.tAS2_L>0?'+'+f(R.tAS2-R.tAS2_L)+' Jan':''},
-    {lb:'US hire',    s:5,e:7,c:'#5fa48f', t:R.tUN_L>0?'+'+f(R.tUN_L)+' combos (Nov 1)':'None needed'},
+    {lb:'US hire',    s:usHireStart,e:usHireEnd,c:usHireColor, t:usHireT},
     {lb:'US stage 2', s:8,e:9,c:'#a2ccb4', t:R.tUN-R.tUN_L>0?'+'+f(R.tUN-R.tUN_L)+' Jan':''},
     {lb:'Launch',     s:9,e:9,c:'#ef4444', t:'Nov 1'}
   ];
@@ -626,8 +645,8 @@ function render(){
       +'</div>';
   });
 
-  var usTutHtml=usC>0?'<div style="font-size:12px;color:var(--g2);margin-top:2px">'+f(R.usUA)+' unique tutors (\xf7'+spt+')</div>':'';
-  var usLaunchTutHtml=usC_L>0?'<div style="font-size:12px;color:var(--g2)">'+f(R.usUA_L)+' unique tutors</div>':'';
+  var usTutHtml='';
+  var usLaunchTutHtml='';
 
   var paceHtml='';
   if(usBySubj.length>0){
@@ -636,9 +655,7 @@ function render(){
       paceRows+='<tr>'
         +'<td style="font-weight:500">'+r.n+'</td>'
         +'<td style="font-weight:600;color:var(--g1)">'+r.launch_combos+'</td>'
-        +'<td style="color:var(--g2)">'+r.launch_tutors+'</td>'
         +'<td style="color:var(--c600)">'+r.full_combos+'</td>'
-        +'<td style="color:var(--c400)">'+r.full_tutors+'</td>'
         +'<td style="font-family:var(--mono)">'+(r.rr>0?r.rr+'/mo':'no data')+'</td>'
         +'<td><span class="bg '+riskClass(r.mos100)+'">'+(r.mos100!==null?r.mos100+' mo':'&mdash;')+'</span></td>'
         +'<td><span class="bg '+riskClass(r.mos80)+'">'+(r.mos80!==null?r.mos80+' mo':'&mdash;')+'</span></td>'
@@ -647,13 +664,29 @@ function render(){
     });
     paceHtml='<div class="sec" style="margin-top:1.5rem">US subject pacing &mdash; run rate stress test</div>'
       +'<div class="co co-o" style="font-size:12px"><strong>Run rates are tutor-subject combos/month</strong> (March 2026 actuals). One tutor with 4 subjects = 4 combos. Months needed = combos needed by Nov 1 &divide; run rate. Window = 3 months (Jul&ndash;Sep). <strong>Recommend refreshing rates in June 2026.</strong></div>'
-      +'<table><thead><tr><th>Subject</th><th>Combos by Nov 1</th><th>Unique tutors by Nov 1</th><th>Combos full (peak)</th><th>Unique tutors full</th><th>Run rate (combos/mo)</th><th>Months @ 100%</th><th>Months @ 80%</th><th>Months @ 60%</th></tr></thead>'
+      +'<table><thead><tr><th>Subject</th><th>Combos by Nov 1</th><th>Combos full (peak)</th><th>Run rate (combos/mo)</th><th>Months @ 100%</th><th>Months @ 80%</th><th>Months @ 60%</th></tr></thead>'
       +'<tbody>'+paceRows+'</tbody></table>'
       +'<div class="note">Green = &le;2 months. Amber = 3 months (tight). Red = &ge;4 months or no run rate data. Months based on '+(rampPct*100).toFixed(0)+'% day-one adoption. Run rates from March 2026 &mdash; update in June 2026.</div>';
   }
 
+  // Grid month names and current month (April 2026 = index 2)
+  var GRID_MONTHS=['Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov'];
+  var TODAY_IDX=2; // April 2026
+  var tlWarning;
+  if(!usC>0 || usC===0){
+    tlWarning='<div class="co co-g">No US contracts needed at current settings &mdash; existing pool covers peak demand.</div>';
+  } else if(!usHireTight){
+    tlWarning='<div class="co co-g">US hiring fits within the standard <strong>Jul&ndash;Sep 2026</strong> window at current settings (&le;3 months needed for all subjects at 100% run rate).</div>';
+  } else if(usHireStart < TODAY_IDX){
+    // Required start is already in the past
+    tlWarning='<div class="co co-r"><strong>&#9888; Already behind &mdash; US hiring should have started in '+GRID_MONTHS[usHireStart]+' 2026</strong> &mdash; the slowest subject (<strong>'+criticalSubj+'</strong>) needs '+maxMosNeeded+' months at 100% run rate. With only '+(9-TODAY_IDX)+' months remaining before Nov 1, this scenario is not achievable at current run rates. Reduce demand inputs, raise supply inputs, or accept a smaller Nov 1 launch.</div>';
+  } else if(usHireStart === TODAY_IDX){
+    tlWarning='<div class="co co-r"><strong>&#9888; US hiring must start immediately (April 2026)</strong> &mdash; the slowest subject (<strong>'+criticalSubj+'</strong>) needs '+maxMosNeeded+' months at 100% run rate to hit Nov 1 combos. No runway remaining. Begin outreach this month or reduce the Nov 1 target.</div>';
+  } else {
+    tlWarning='<div class="co co-r"><strong>&#9888; US hiring must start by '+GRID_MONTHS[usHireStart]+' 2026</strong> &mdash; the slowest subject (<strong>'+criticalSubj+'</strong>) needs '+maxMosNeeded+' months at 100% run rate to hit Nov 1 combos. This is outside the standard Jul&ndash;Sep window. Either reduce US contracts or begin outreach earlier.</div>';
+  }
   document.getElementById('t-tl').innerHTML=
-    '<div class="co co-g">All three regions hire Jul&ndash;Sep 2026. The <strong>day-one adoption level</strong> determines how many tutor-subject combos must be in place by Nov 1. At '+(rampPct*100).toFixed(0)+'%, you only need tutors for '+(rampPct*100).toFixed(0)+'% of the eventual full user base &mdash; the remaining '+(100-rampPct*100).toFixed(0)+'% can be hired in January 2027 once adoption grows.</div>'
+    tlWarning    +'<div class="co co-n" style="font-size:12px;margin-top:0">UK and PH always hire Jul&ndash;Sep 2026 (no run rate constraint for new hires). The <strong>day-one adoption level</strong> determines how many combos must be in place by Nov 1 vs deferred to Jan 2027. At '+(rampPct*100).toFixed(0)+'%, the remaining '+(100-rampPct*100).toFixed(0)+'% of tutors can be hired in January 2027 once adoption grows.</div>'
     +'<div class="rg">'
       +'<div class="rc"><div class="rt">US &mdash; tutor-subject combos</div>'
         +'<div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>'
@@ -668,21 +701,21 @@ function render(){
       +'<div class="rc"><div class="rt">UK (Europe)</div>'
         +'<div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>'
         +'<div style="font-size:20px;font-weight:600;color:var(--g1);">+'+f(R.tES)+' combos</div>'
-        +'<div style="font-size:12px;color:var(--g2);margin-top:2px">'+f(euUA)+' unique tutors (\xf7'+spt+')</div>'
+        
         +'<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">'
           +'<div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 &mdash; '+(rampPct*100).toFixed(0)+'% day-one adoption</div>'
           +'<div style="font-size:17px;font-weight:600;color:var(--g1);margin-top:2px">+'+f(R.tES_L)+' combos</div>'
-          +'<div style="font-size:12px;color:var(--g2)">'+f(euUA_L)+' unique tutors</div>'
+          
         +'</div>'
       +'</div>'
       +'<div class="rc"><div class="rt">Philippines (Asia)</div>'
         +'<div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>'
         +'<div style="font-size:20px;font-weight:600;color:var(--orange);">+'+f(R.tAS2)+' combos</div>'
-        +'<div style="font-size:12px;color:var(--g2);margin-top:2px">'+f(asUA)+' unique tutors (\xf7'+spt+')</div>'
+        
         +'<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">'
           +'<div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 &mdash; '+(rampPct*100).toFixed(0)+'% day-one adoption</div>'
           +'<div style="font-size:17px;font-weight:600;color:var(--orange);margin-top:2px">+'+f(R.tAS2_L)+' combos</div>'
-          +'<div style="font-size:12px;color:var(--g2)">'+f(asUA_L)+' unique tutors</div>'
+          
         +'</div>'
       +'</div>'
     +'</div>'
