@@ -157,161 +157,184 @@ tbody tr:hover td{background:var(--mint)}
 
 <div class="panel">
   <div class="slabel">Demand inputs</div>
-  <div class="g3">
-    <div class="ctrl">
-      <div class="cl">US student penetration rate</div>
-      <div class="csub">% of DOW students who ever use live chat</div>
-      <select id="us-pen">
-        <option value="0.05">5% — very low adoption</option>
-        <option value="0.10" selected>10% — base estimate</option>
-        <option value="0.15">15% — moderate</option>
-        <option value="0.20">20% — strong</option>
-        <option value="0.30">30% — high</option>
-        <option value="0.40">40% — very high</option>
-      </select>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--g2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--mint2)">🇺🇸 United States</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="ctrl">
+          <div class="cl">Student penetration rate</div>
+          <div class="csub">% of DOW students who ever use live chat</div>
+          <select id="us-pen">
+            <option value="0.05">5% — very low adoption</option>
+            <option value="0.10" selected>10% — base estimate</option>
+            <option value="0.15">15% — moderate</option>
+            <option value="0.20">20% — strong</option>
+            <option value="0.30">30% — high</option>
+            <option value="0.40">40% — very high</option>
+          </select>
+        </div>
+        <div class="ctrl">
+          <div class="cl">Sessions per active user per year</div>
+          <div class="csub">Avg annual sessions for students who use it</div>
+          <select id="us-freq">
+            <option value="3">3 sessions/yr — light use</option>
+            <option value="5">5 sessions/yr</option>
+            <option value="9" selected>9 sessions/yr — base estimate</option>
+            <option value="13">13 sessions/yr</option>
+            <option value="20">20 sessions/yr — heavy use</option>
+            <option value="30">30 sessions/yr — power user</option>
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="ctrl">
-      <div class="cl">Sessions per active user per year</div>
-      <div class="csub">Avg annual sessions for students who use it</div>
-      <select id="us-freq">
-        <option value="3">3 sessions/yr — light use</option>
-        <option value="5">5 sessions/yr</option>
-        <option value="9" selected>9 sessions/yr — base estimate</option>
-        <option value="13">13 sessions/yr</option>
-        <option value="20">20 sessions/yr — heavy use</option>
-        <option value="30">30 sessions/yr — power user</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <div class="cl">Language interest rate</div>
-      <div class="csub">% of eligible-country students wanting language tutoring</div>
-      <select id="lang-int">
-        <option value="0.15">15% — conservative</option>
-        <option value="0.25" selected>25% — base estimate</option>
-        <option value="0.35">35%</option>
-        <option value="0.50">50% — high interest</option>
-      </select>
-    </div>
-  </div>
-  <div class="g2">
-    <div class="ctrl">
-      <div class="cl">Europe &amp; Asia penetration rate</div>
-      <div class="csub">May differ from US — new market, slower initial adoption</div>
-      <select id="int-pen">
-        <option value="0.05">5% — very low adoption</option>
-        <option value="0.10" selected>10% — base estimate</option>
-        <option value="0.15">15% — moderate</option>
-        <option value="0.20">20% — strong</option>
-        <option value="0.30">30% — high</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <div class="cl">EU/AS sessions per active user per year</div>
-      <select id="int-freq">
-        <option value="3">3 sessions/yr — light use</option>
-        <option value="5">5 sessions/yr</option>
-        <option value="9" selected>9 sessions/yr — base estimate</option>
-        <option value="13">13 sessions/yr</option>
-        <option value="20">20 sessions/yr — heavy use</option>
-      </select>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--g2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--mint2)">🌍 Europe (UK) &amp; 🌏 Asia (Philippines)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div class="ctrl">
+          <div class="cl">Student penetration rate</div>
+          <div class="csub">May differ — new market, slower adoption</div>
+          <select id="int-pen">
+            <option value="0.05">5% — very low adoption</option>
+            <option value="0.10" selected>10% — base estimate</option>
+            <option value="0.15">15% — moderate</option>
+            <option value="0.20">20% — strong</option>
+            <option value="0.30">30% — high</option>
+            <option value="0.40">40% — very high</option>
+          </select>
+        </div>
+        <div class="ctrl">
+          <div class="cl">Sessions per active user per year</div>
+          <select id="int-freq">
+            <option value="3">3 sessions/yr — light use</option>
+            <option value="5">5 sessions/yr</option>
+            <option value="9" selected>9 sessions/yr — base estimate</option>
+            <option value="13">13 sessions/yr</option>
+            <option value="20">20 sessions/yr — heavy use</option>
+            <option value="30">30 sessions/yr — power user</option>
+          </select>
+        </div>
+        <div class="ctrl">
+          <div class="cl">Language interest rate</div>
+          <div class="csub">% of eligible-country students wanting language tutoring</div>
+          <select id="lang-int">
+            <option value="0.15">15% — conservative</option>
+            <option value="0.25" selected>25% — base estimate</option>
+            <option value="0.35">35%</option>
+            <option value="0.50">50% — high interest</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="panel">
   <div class="slabel">Supply inputs</div>
-  <div class="g2">
-    <div class="ctrl"><div class="cl">US tutors willing to take live chat</div>
-      <select id="us-avail">
-        <option value="0.50">50%</option><option value="0.55">55%</option>
-        <option value="0.60" selected>60%</option><option value="0.65">65%</option>
-        <option value="0.70">70%</option><option value="0.80">80%</option>
-        <option value="0.90">90%</option>
-      </select>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px">
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--g2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--mint2)">🇺🇸 United States</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="ctrl"><div class="cl">Tutors willing to take live chat</div>
+          <select id="us-avail">
+            <option value="0.50">50%</option><option value="0.55">55%</option>
+            <option value="0.60">60%</option><option value="0.65">65%</option>
+            <option value="0.70">70%</option><option value="0.80" selected>80%</option>
+            <option value="0.90">90%</option>
+          </select>
+        </div>
+        <div class="ctrl">
+          <div class="cl">Max utilization ceiling</div>
+          <div class="csub">Industry norm: 70&ndash;80% &middot; prevents stockouts on surge</div>
+          <select id="util-ceil">
+            <option value="0.60">60% — very conservative</option>
+            <option value="0.70">70% — conservative</option>
+            <option value="0.75" selected>75% — recommended</option>
+            <option value="0.80">80% — standard</option>
+            <option value="0.90">90% — aggressive</option>
+            <option value="1.00">100% — no buffer</option>
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="ctrl">
-      <div class="cl">Max utilization ceiling (US)</div>
-      <div class="csub">Industry norm: 70&ndash;80% &middot; prevents stockouts on surge</div>
-      <select id="util-ceil">
-        <option value="0.60">60% — very conservative</option>
-        <option value="0.70">70% — conservative</option>
-        <option value="0.75" selected>75% — recommended</option>
-        <option value="0.80">80% — standard</option>
-        <option value="0.90">90% — aggressive</option>
-        <option value="1.00">100% — no buffer</option>
-      </select>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:var(--g2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--mint2)">🌍 Europe (UK) &amp; 🌏 Asia (Philippines)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="ctrl">
+          <div class="cl">Sessions per tutor per week</div>
+          <div class="csub data">Validated: median 2 &middot; mean 7.6 &middot; P75 = 7/wk</div>
+          <select id="intl-sess-wk">
+            <option value="2">2/wk — median (actual)</option>
+            <option value="5">5/wk — conservative</option>
+            <option value="7" selected>7/wk — P75 base</option>
+            <option value="10">10/wk</option>
+            <option value="15">15/wk</option>
+            <option value="20">20/wk — P90</option>
+          </select>
+        </div>
+        <div class="ctrl">
+          <div class="cl">Avg concurrent chats per tutor</div>
+          <div class="csub data">Validated: 26.6% sessions overlap &middot; 15.6% multitask</div>
+          <select id="concurrent">
+            <option value="1.0">1.0&times; — no multitasking</option>
+            <option value="1.2" selected>1.2&times; — light (base)</option>
+            <option value="1.5">1.5&times; — moderate</option>
+            <option value="2.0">2.0&times; — heavy</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="g3">
-    <div class="ctrl">
-      <div class="cl">EU/AS sessions per tutor per week</div>
-      <div class="csub data">Validated: median 2 &middot; mean 7.6 &middot; P75 = 7/wk</div>
-      <select id="intl-sess-wk">
-        <option value="2">2/wk — median (actual)</option>
-        <option value="5">5/wk — conservative</option>
-        <option value="7" selected>7/wk — P75 base</option>
-        <option value="10">10/wk</option>
-        <option value="15">15/wk</option>
-        <option value="20">20/wk — P90</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <div class="cl">Avg concurrent chats per tutor</div>
-      <div class="csub data">Validated: 26.6% sessions overlap &middot; 15.6% multitask</div>
-      <select id="concurrent">
-        <option value="1.0">1.0&times; — no multitasking</option>
-        <option value="1.2" selected>1.2&times; — light (base)</option>
-        <option value="1.5">1.5&times; — moderate</option>
-        <option value="2.0">2.0&times; — heavy</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <div class="cl">Avg DOW subjects per tutor</div>
-      <div class="csub data">Validated: actual avg 3.43 subjects/tutor</div>
-      <select id="spt">
-        <option value="1">1 — dedicated</option><option value="2">2 subjects</option>
-        <option value="4" selected>4 subjects</option><option value="6">6 subjects</option>
-        <option value="8">8 subjects</option><option value="10">10 subjects</option>
-      </select>
-    </div>
-  </div>
-  <div class="g4">
-    <div class="ctrl">
-      <div class="cl">Peak demand multiplier</div>
-      <div class="csub data">Applies to DOW demand only &mdash; not 2025 baseline. Oct = 1.83&times;, Nov = 1.31&times;</div>
-      <select id="peak-mult">
-        <option value="1.0">1.0&times; — no peak buffer</option>
-        <option value="1.3" selected>1.3&times; — Nov level (base)</option>
-        <option value="1.5">1.5&times; — moderate peak</option>
-        <option value="1.83">1.83&times; — Oct peak (data-validated)</option>
-        <option value="2.0">2.0&times; — stretch scenario</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <div class="cl">Day-one adoption level (Nov 1)</div>
-      <div class="csub">% of full program demand expected on launch day. Drives how many tutors must be contracted before Nov 1 vs hired in Jan 2027 once adoption grows.</div>
-      <select id="ramp-pct">
-        <option value="0.10">10% — very low day-one adoption</option>
-        <option value="0.20">20% — low day-one adoption</option>
-        <option value="0.35" selected>35% — moderate day-one adoption (base)</option>
-        <option value="0.50">50% — strong day-one adoption</option>
-        <option value="0.75">75% — near-full from launch</option>
-        <option value="1.00">100% — full demand on Nov 1</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <div class="cl">Pre-launch attrition</div>
-      <select id="att">
-        <option value="0.10">10% — low</option><option value="0.15">15%</option>
-        <option value="0.20" selected>20%</option><option value="0.25">25%</option>
-        <option value="0.30">30% — high</option>
-      </select>
-    </div>
-    <div class="ctrl"><div class="cl">Min tutors per subject</div>
-      <select id="min-t">
-        <option value="0">No floor</option><option value="1" selected>1 minimum</option>
-        <option value="2">2 minimum</option><option value="3">3 minimum</option>
-      </select>
+  <div style="border-top:1px solid var(--c200);padding-top:10px">
+    <div style="font-size:10px;font-weight:700;color:var(--g2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">🌐 All regions</div>
+    <div class="g4">
+      <div class="ctrl">
+        <div class="cl">Avg DOW subjects per tutor</div>
+        <div class="csub data">Validated: actual avg 3.43 subjects/tutor</div>
+        <select id="spt">
+          <option value="1">1 — dedicated</option><option value="2">2 subjects</option>
+          <option value="4" selected>4 subjects</option><option value="6">6 subjects</option>
+          <option value="8">8 subjects</option><option value="10">10 subjects</option>
+        </select>
+      </div>
+      <div class="ctrl">
+        <div class="cl">Peak demand multiplier</div>
+        <div class="csub data">Applies to DOW demand only. Oct = 1.83&times;, Nov = 1.31&times;</div>
+        <select id="peak-mult">
+          <option value="1.0">1.0&times; — no peak buffer</option>
+          <option value="1.3" selected>1.3&times; — Nov level (base)</option>
+          <option value="1.5">1.5&times; — moderate peak</option>
+          <option value="1.83">1.83&times; — Oct peak (data-validated)</option>
+          <option value="2.0">2.0&times; — stretch scenario</option>
+        </select>
+      </div>
+      <div class="ctrl">
+        <div class="cl">Day-one adoption level (Nov 1)</div>
+        <div class="csub">% of full demand expected on launch day</div>
+        <select id="ramp-pct">
+          <option value="0.10">10% — very low</option>
+          <option value="0.20">20% — low</option>
+          <option value="0.35" selected>35% — moderate (base)</option>
+          <option value="0.50">50% — strong</option>
+          <option value="0.75">75% — near-full</option>
+          <option value="1.00">100% — full demand day one</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="ctrl">
+          <div class="cl">Pre-launch attrition</div>
+          <select id="att">
+            <option value="0.10">10% — low</option><option value="0.15">15%</option>
+            <option value="0.20" selected>20%</option><option value="0.25">25%</option>
+            <option value="0.30">30% — high</option>
+          </select>
+        </div>
+        <div class="ctrl"><div class="cl">Min tutors per subject</div>
+          <select id="min-t">
+            <option value="0">No floor</option><option value="1" selected>1 minimum</option>
+            <option value="2">2 minimum</option><option value="3">3 minimum</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
 </div>
