@@ -273,9 +273,9 @@ tbody tr:hover td{background:var(--mint)}
     </div>
   </div>
   <div class="g4">
-    <div class="ctrl highlight">
+    <div class="ctrl">
       <div class="cl">Peak demand multiplier</div>
-      <div class="csub data">Data: Oct = 1.83&times; avg &middot; Nov launch = 1.31&times; avg</div>
+      <div class="csub data">Applies to DOW demand only &mdash; not 2025 baseline. Oct = 1.83&times;, Nov = 1.31&times;</div>
       <select id="peak-mult">
         <option value="1.0">1.0&times; — no peak buffer</option>
         <option value="1.3" selected>1.3&times; — Nov level (base)</option>
@@ -284,9 +284,9 @@ tbody tr:hover td{background:var(--mint)}
         <option value="2.0">2.0&times; — stretch scenario</option>
       </select>
     </div>
-    <div class="ctrl highlight">
+    <div class="ctrl">
       <div class="cl">Launch ramp &mdash; first 60 days</div>
-      <div class="csub data">Nov+Dec = 20.3% of annual at full adoption</div>
+      <div class="csub">% of full steady-state demand active on Nov 1. Rest staged into Jan 2027.</div>
       <select id="ramp-pct">
         <option value="0.10">10% of steady-state — very slow ramp</option>
         <option value="0.20">20% — slow ramp</option>
@@ -453,7 +453,10 @@ function compute(usPen,usFreq,intPen,intFreq,usAvail,uc,isw,cc,spt,mt,li,att,pea
   const eAS=rows.reduce((s,r)=>s+r.eD*W,0),aAS=rows.reduce((s,r)=>s+r.aD*W,0);
   const eAH=rows.reduce((s,r)=>s+r.eD*W*(r.dur/60),0),aAH=rows.reduce((s,r)=>s+r.aD*W*(r.dur/60),0);
   const tc=eAH*UKR+aAH*ASR;
-  return{rows,tUSp,tUD,tUN,usUA,usC,usC_L,tES,euUA,euC,euC_L,tAS2,asUA,asC,asC_L,eAS,aAS,eAH,aAH,tc,peakMult,rampPct};
+  const tES_L=rows.reduce((s,r)=>s+r.eT_launch,0),euUA_L=Math.ceil(tES_L/spt);
+  const tAS2_L=rows.reduce((s,r)=>s+r.aT_launch,0),asUA_L=Math.ceil(tAS2_L/spt);
+  const tUN_L=rows.reduce((s,r)=>s+r.uN_launch,0),usUA_L=Math.ceil(tUN_L/spt);
+  return{rows,tUSp,tUD,tUN,tUN_L,usUA,usUA_L,usC,usC_L,tES,tES_L,euUA,euUA_L,euC,euC_L,tAS2,tAS2_L,asUA,asUA_L,asC,asC_L,eAS,aAS,eAH,aAH,tc,peakMult,rampPct};
 }
 
 function gbadge(g){return `<span style="font-size:10px;background:var(--mint);color:var(--g1);padding:2px 7px;border-radius:10px;font-weight:600">${g}</span>`;}
@@ -474,7 +477,7 @@ function render(){
   const peakMult=parseFloat(document.getElementById('peak-mult').value);
   const rampPct=parseFloat(document.getElementById('ramp-pct').value);
   const R=compute(usPen,usFreq,intPen,intFreq,usAvail,uc,isw,cc,spt,mt,li,att,peakMult,rampPct);
-  const{rows,tUSp,tUD,usC,usC_L,euUA,euC,euC_L,asUA,asC,asC_L,eAH,aAH,eAS,aAS,tc,tUN}=R;
+  const{rows,tUSp,tUD,usC,usC_L,euUA,euUA_L,euC,euC_L,asUA,asUA_L,asC,asC_L,eAH,aAH,eAS,aAS,tc,tUN,tUN_L,tES,tES_L,tAS2,tAS2_L}=R;
   const ok=usC===0;
   const okL=usC_L===0;
   const effRate=(usPen*usFreq).toFixed(1);
@@ -504,7 +507,7 @@ function render(){
       <strong>Launch staging:</strong> By Nov 1 need <strong>${f(usC_L)}</strong> contracts (for ${(rampPct*100).toFixed(0)}% ramp demand). Remaining <strong>${f(Math.max(0,usC-usC_L))}</strong> can be soft-reserved and activated in Jan 2027 as adoption grows.
     </div>
     <div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#92400e">
-      <strong>Subject-slots vs contracts:</strong> Last column = subject-slots (not unique people). ${f(tUN)} slots &divide; ${spt} subjects/tutor = ${f(R.usUA)} active tutors &rarr; &divide; (1&minus;${Math.round(att*100)}%) = <strong>${f(usC)} contracts</strong>.
+      <strong>Tutor-subject combos vs unique tutors:</strong> Last column = combos needed (not unique people). ${f(tUN)} combos &divide; ${spt} subjects/tutor = ${f(R.usUA)} unique tutors &rarr; &divide; (1&minus;${Math.round(att*100)}% attrition) = <strong>${f(usC)} contracts</strong>. Run rate data is also in combos/month.
     </div>
     <table><thead><tr><th>Subject</th><th>Group</th><th>Regions</th><th>Duration</th><th>Avg demand/wk</th><th>Peak demand/wk</th><th>Spare (${(uc*100).toFixed(0)}%)</th><th>Gap</th><th>Subject-slots</th></tr></thead>
     <tbody>${uS.map(r=>`<tr>
@@ -522,7 +525,7 @@ function render(){
 
   const eS=[...rows].filter(r=>inEU(r)).sort((a,b)=>b.eT-a.eT);
   document.getElementById('t-uk').innerHTML=`
-    <div class="co co-b">${f(R.tES)} subject-slots &divide; ${spt} = ${f(euUA)} active UK tutors &rarr; ${f(euC)} contracts (full) &middot; ${f(euC_L)} needed by Nov 1</div>
+    <div class="co co-b">${f(tES)} combos &divide; ${spt} = ${f(euUA)} unique tutors &rarr; ${f(euC)} contracts (full) &middot; By Nov 1: ${f(tES_L)} combos = ${f(euUA_L)} unique tutors &rarr; ${f(euC_L)} contracts</div>
     <table><thead><tr><th>Subject</th><th>Group</th><th>Student pool</th><th>Avg demand/wk</th><th>Peak demand/wk</th><th>Eff. sess/tutor/wk</th><th>Tutors (full)</th></tr></thead>
     <tbody>${eS.map(r=>`<tr>
       <td style="font-weight:500">${r.n}</td><td>${gbadge(r.g)}</td>
@@ -536,7 +539,7 @@ function render(){
 
   const aS=[...rows].filter(r=>inAS(r)).sort((a,b)=>b.aT-a.aT);
   document.getElementById('t-as').innerHTML=`
-    <div class="co co-o">${f(R.tAS2)} subject-slots &divide; ${spt} = ${f(asUA)} active PH tutors &rarr; ${f(asC)} contracts (full) &middot; ${f(asC_L)} needed by Nov 1</div>
+    <div class="co co-o">${f(tAS2)} combos &divide; ${spt} = ${f(asUA)} unique tutors &rarr; ${f(asC)} contracts (full) &middot; By Nov 1: ${f(tAS2_L)} combos = ${f(asUA_L)} unique tutors &rarr; ${f(asC_L)} contracts</div>
     <table><thead><tr><th>Subject</th><th>Group</th><th>Student pool</th><th>Avg demand/wk</th><th>Peak demand/wk</th><th>Eff. sess/tutor/wk</th><th>Tutors (full)</th></tr></thead>
     <tbody>${aS.map(r=>`<tr>
       <td style="font-weight:500">${r.n}</td><td>${gbadge(r.g)}</td>
@@ -562,63 +565,119 @@ function render(){
     {label:'80% run rate',mult:0.8,cls:'bg-o'},
     {label:'60% run rate',mult:0.6,cls:'bg-r'},
   ];
-  const usBySubj=uS.filter(r=>r.uN>0).map(r=>{
+  // uN_launch = combos needed by Nov 1 (ramp-adjusted); uN = full peak combos
+  const usBySubj=uS.filter(r=>r.uN>0||r.uN_launch>0).map(r=>{
     const rr=RR_BASE[r.n]||0;
-    return{n:r.n,need:r.uN,rr,need_L:r.uN_launch,
-      mos100:rr>0?Math.ceil(r.uN/rr):null,
-      mos80:rr>0?Math.ceil(r.uN/(rr*0.8)):null,
-      mos60:rr>0?Math.ceil(r.uN/(rr*0.6)):null,
+    const lc=r.uN_launch||0;  // launch combos
+    const fc=r.uN||0;          // full combos
+    return{
+      n:r.n,
+      launch_combos:lc,
+      launch_tutors:Math.ceil(lc/spt),
+      full_combos:fc,
+      full_tutors:Math.ceil(fc/spt),
+      rr,
+      // Months based on LAUNCH combos (what must be done by Nov 1)
+      mos100:rr>0&&lc>0?Math.ceil(lc/rr):null,
+      mos80:rr>0&&lc>0?Math.ceil(lc/(rr*0.8)):null,
+      mos60:rr>0&&lc>0?Math.ceil(lc/(rr*0.6)):null,
     };
   });
   const riskClass=(m)=>m===null?'bg-r':m>=4?'bg-r':m>=3?'bg-o':'bg-g';
 
   document.getElementById('t-tl').innerHTML=`
-    <div class="co co-g">All three regions start <strong>July 2026</strong> &mdash; same Jul&ndash;Sep 3-month window. UK/PH counts are low enough to fit the existing US pipeline infrastructure.</div>
+    <div class="co co-g">All three regions hire Jul&ndash;Sep 2026. The <strong>ramp %</strong> determines how many combos must be in place by Nov 1 vs staged into Jan 2027 as adoption grows.</div>
+
     <div class="rg">
-      <div class="rc"><div class="rt">US</div>
-        <div style="font-size:20px;font-weight:600;color:${usC>0?'var(--orange)':'var(--g1)'}">${usC>0?'+'+f(usC):'None needed'}</div>
-        <div style="font-size:12px;color:var(--c400);margin-top:4px">Full &middot; Nov 1 need: ${usC_L>0?'+'+f(usC_L):'None'}</div>
-        ${usC>0?'<div style="font-size:12px;color:var(--c400)">~'+f(usMo)+'/mo needed</div>':''}
+      <div class="rc">
+        <div class="rt">US &mdash; tutor-subject combos</div>
+        <div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>
+        <div style="font-size:20px;font-weight:600;color:${usC>0?'var(--orange)':'var(--g1)'}">${usC>0?f(R.tUN)+' combos':'None needed'}</div>
+        ${usC>0?`<div style="font-size:12px;color:var(--g2);margin-top:2px">${f(R.usUA)} unique tutors (÷${spt})</div>`:''}
+        <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">
+          <div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 (${(rampPct*100).toFixed(0)}% ramp)</div>
+          <div style="font-size:17px;font-weight:600;color:${usC_L>0?'var(--orange)':'var(--g1)'};margin-top:2px">${usC_L>0?f(R.tUN_L)+' combos':'None needed'}</div>
+          ${usC_L>0?`<div style="font-size:12px;color:var(--g2)">${f(R.usUA_L)} unique tutors</div>`:''}
+        </div>
       </div>
-      <div class="rc"><div class="rt">UK (Europe)</div>
-        <div style="font-size:20px;font-weight:600;color:var(--g1)">+${f(euC)}</div>
-        <div style="font-size:12px;color:var(--c400);margin-top:4px">Full &middot; Nov 1 need: +${f(euC_L)}</div>
-        <div style="font-size:12px;color:var(--c400)">~${f(euMo)}/mo</div>
+      <div class="rc">
+        <div class="rt">UK (Europe)</div>
+        <div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>
+        <div style="font-size:20px;font-weight:600;color:var(--g1)">+${f(R.tES)} combos</div>
+        <div style="font-size:12px;color:var(--g2);margin-top:2px">${f(euUA)} unique tutors (÷${spt})</div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">
+          <div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 (${(rampPct*100).toFixed(0)}% ramp)</div>
+          <div style="font-size:17px;font-weight:600;color:var(--g1);margin-top:2px">+${f(R.tES_L)} combos</div>
+          <div style="font-size:12px;color:var(--g2)">${f(euUA_L)} unique tutors</div>
+        </div>
       </div>
-      <div class="rc"><div class="rt">Philippines (Asia)</div>
-        <div style="font-size:20px;font-weight:600;color:var(--orange)">+${f(asC)}</div>
-        <div style="font-size:12px;color:var(--c400);margin-top:4px">Full &middot; Nov 1 need: +${f(asC_L)}</div>
-        <div style="font-size:12px;color:var(--c400)">~${f(asMo)}/mo</div>
+      <div class="rc">
+        <div class="rt">Philippines (Asia)</div>
+        <div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>
+        <div style="font-size:20px;font-weight:600;color:var(--orange)">+${f(R.tAS2)} combos</div>
+        <div style="font-size:12px;color:var(--g2);margin-top:2px">${f(asUA)} unique tutors (÷${spt})</div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">
+          <div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 (${(rampPct*100).toFixed(0)}% ramp)</div>
+          <div style="font-size:17px;font-weight:600;color:var(--orange);margin-top:2px">+${f(R.tAS2_L)} combos</div>
+          <div style="font-size:12px;color:var(--g2)">${f(asUA_L)} unique tutors</div>
+        </div>
       </div>
     </div>
-    <div class="sec">Visual timeline</div>
-    <div style="display:grid;grid-template-columns:110px 1fr;gap:6px;margin-bottom:4px"><div></div>
+
+    <div class="sec">Visual hiring timeline</div>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:6px;margin-bottom:4px"><div></div>
       <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:2px">${'Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov'.split(',').map(m=>`<div style="font-size:9px;color:var(--c400);text-align:center">${m}</div>`).join('')}</div>
     </div>
-    ${BARS.map(b=>`<div class="tl-row"><div class="tl-label">${b.lb}</div><div class="tl-bars">${Array.from({length:10},(_,i)=>i>=b.s&&i<=b.e?`<div class="tl-bar" style="background:${b.c}">${i===b.s?b.t:''}</div>`:`<div class="tl-e"></div>`).join('')}</div></div>`).join('')}
+    ${[
+      {lb:'UK hire',    s:5,e:7,c:'#09634f', t:`+${f(R.tES_L)} combos (Nov 1)`},
+      {lb:'UK stage 2', s:8,e:9,c:'#38826e', t:R.tES-R.tES_L>0?`+${f(R.tES-R.tES_L)} Jan`:''},
+      {lb:'PH hire',    s:5,e:7,c:'#d97706', t:`+${f(R.tAS2_L)} combos (Nov 1)`},
+      {lb:'PH stage 2', s:8,e:9,c:'#f59e0b', t:R.tAS2-R.tAS2_L>0?`+${f(R.tAS2-R.tAS2_L)} Jan`:''},
+      {lb:'US hire',    s:5,e:7,c:'#5fa48f', t:R.tUN_L>0?`+${f(R.tUN_L)} combos (Nov 1)`:'None needed'},
+      {lb:'US stage 2', s:8,e:9,c:'#a2ccb4', t:R.tUN-R.tUN_L>0?`+${f(R.tUN-R.tUN_L)} Jan`:''},
+      {lb:'Launch',     s:9,e:9,c:'#ef4444', t:'Nov 1'},
+    ].filter(b=>b.t||b.lb==='Launch').map(b=>`
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:6px;margin-bottom:5px;align-items:center">
+        <div style="font-size:11px;color:var(--c600);font-weight:500">${b.lb}</div>
+        <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:2px">
+          ${Array.from({length:10},(_,i)=>i>=b.s&&i<=b.e&&b.t
+            ?`<div class="tl-bar" style="background:${b.c}">${i===b.s?b.t:''}</div>`
+            :`<div class="tl-e"></div>`
+          ).join('')}
+        </div>
+      </div>`).join('')}
 
     ${usBySubj.length>0?`
     <div class="sec" style="margin-top:1.5rem">US subject pacing &mdash; run rate stress test</div>
-    <div class="co co-o" style="font-size:12px">Run rates are from <strong>March 2026</strong>. They may shift by July when hiring starts. The table below shows months needed at 100%, 80%, and 60% of current run rate. <strong>Recommend refreshing these values in June 2026.</strong></div>
+    <div class="co co-o" style="font-size:12px">
+      <strong>Run rates are tutor-subject combos/month</strong> (March 2026 actuals). One tutor with 4 subjects = 4 combos. Months needed = combos needed by Nov 1 &divide; run rate. Window = 3 months (Jul&ndash;Sep). <strong>Recommend refreshing rates in June 2026.</strong>
+    </div>
     <table><thead><tr>
-      <th>Subject</th><th>Subject-slots needed</th><th>Nov 1 slots</th><th>Run rate (Mar '26)</th>
-      <th>Months @ 100%</th><th>Months @ 80%</th><th>Months @ 60%</th>
+      <th>Subject</th>
+      <th>Combos by Nov 1</th>
+      <th>Unique tutors by Nov 1</th>
+      <th>Combos full (peak)</th>
+      <th>Unique tutors full</th>
+      <th>Run rate (combos/mo)</th>
+      <th>Months @ 100%</th>
+      <th>Months @ 80%</th>
+      <th>Months @ 60%</th>
     </tr></thead>
     <tbody>${usBySubj.map(r=>`<tr>
       <td style="font-weight:500">${r.n}</td>
-      <td>${r.need}</td>
-      <td style="color:var(--g1)">${r.need_L}</td>
+      <td style="font-weight:600;color:var(--g1)">${r.launch_combos}</td>
+      <td style="color:var(--g2)">${r.launch_tutors}</td>
+      <td style="color:var(--c600)">${r.full_combos}</td>
+      <td style="color:var(--c400)">${r.full_tutors}</td>
       <td style="font-family:var(--mono)">${r.rr>0?r.rr+'/mo':'no data'}</td>
       <td><span class="bg ${riskClass(r.mos100)}">${r.mos100!==null?r.mos100+' mo':'—'}</span></td>
       <td><span class="bg ${riskClass(r.mos80)}">${r.mos80!==null?r.mos80+' mo':'—'}</span></td>
       <td><span class="bg ${riskClass(r.mos60)}">${r.mos60!==null?r.mos60+' mo':'—'}</span></td>
     </tr>`).join('')}</tbody></table>
-    <div class="note">Green = &le;2 months needed. Amber = 3 months. Red = &ge;4 months or no run rate data. Recommend refreshing run rates in June 2026 before hiring starts. Jul&ndash;Sep window = 3 months.</div>
+    <div class="note">Green = fits in &le;2 months. Amber = 3 months (tight). Red = &ge;4 months or no run rate data. Months calculated on ramp-adjusted combos needed by Nov 1 at current ${(rampPct*100).toFixed(0)}% ramp. Full (peak-sized) combos are the eventual target by Jan 2027. Run rates from March 2026 &mdash; update in June 2026 before hiring starts.</div>
     `:''}`;
 
-  // Seasonality tab
-  const maxIdx=Math.max(...Object.values(SEASON));
-  document.getElementById('t-season').innerHTML=`
+  document.getElementById('t-season')document.getElementById('t-season').innerHTML=`
     <div class="co co-p">Seasonal demand indices derived from 221,727 live chat sessions across DOW subjects over 720 days (Apr 2024 &ndash; Mar 2026). 1.0 = average month. <strong>Nov 1 launch hits at 1.31&times; average &mdash; not a soft start.</strong> Peak is Oct at 1.83&times;.</div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem">
       ${Object.entries(SEASON).map(([m,idx])=>{
