@@ -339,7 +339,6 @@ tbody tr:hover td{background:var(--mint)}
 <div class="footer">Varsity Tutors &middot; Operations &amp; Forecasting &middot; Data as of March 2026 &middot; 221,727 sessions analyzed over 720 days &middot; <a href="methodology.html">Model Guide</a></div>
 </div>
 <script>
-<script>
 const ST={US:888000,EU:25000,AS:20000};
 const W=52,UKR=18,ASR=10;
 const SI=0.6;
@@ -460,147 +459,144 @@ function compute(usPen,usFreq,intPen,intFreq,usAvail,uc,isw,cc,spt,mt,li,att,pea
 function gbadge(g){return `<span style="font-size:10px;background:var(--mint);color:var(--g1);padding:2px 7px;border-radius:10px;font-weight:600">${g}</span>`;}
 
 function render(){
-  const usPen=parseFloat(document.getElementById('us-pen').value);
-  const usFreq=parseFloat(document.getElementById('us-freq').value);
-  const intPen=parseFloat(document.getElementById('int-pen').value);
-  const intFreq=parseFloat(document.getElementById('int-freq').value);
-  const usAvail=parseFloat(document.getElementById('us-avail').value);
-  const uc=parseFloat(document.getElementById('util-ceil').value);
-  const isw=parseInt(document.getElementById('intl-sess-wk').value);
-  const cc=parseFloat(document.getElementById('concurrent').value);
-  const spt=parseInt(document.getElementById('spt').value);
-  const mt=parseInt(document.getElementById('min-t').value);
-  const li=parseFloat(document.getElementById('lang-int').value);
-  const att=parseFloat(document.getElementById('att').value);
-  const peakMult=parseFloat(document.getElementById('peak-mult').value);
-  const rampPct=parseFloat(document.getElementById('ramp-pct').value);
-  const R=compute(usPen,usFreq,intPen,intFreq,usAvail,uc,isw,cc,spt,mt,li,att,peakMult,rampPct);
-  const{rows,tUSp,tUD,usC,usC_L,euUA,euUA_L,euC,euC_L,asUA,asUA_L,asC,asC_L,eAH,aAH,eAS,aAS,tc,tUN,tUN_L,tES,tES_L,tAS2,tAS2_L}=R;
-  const ok=usC===0;
-  const okL=usC_L===0;
-  const effRate=(usPen*usFreq).toFixed(1);
+  var usPen=parseFloat(document.getElementById('us-pen').value);
+  var usFreq=parseFloat(document.getElementById('us-freq').value);
+  var intPen=parseFloat(document.getElementById('int-pen').value);
+  var intFreq=parseFloat(document.getElementById('int-freq').value);
+  var usAvail=parseFloat(document.getElementById('us-avail').value);
+  var uc=parseFloat(document.getElementById('util-ceil').value);
+  var isw=parseInt(document.getElementById('intl-sess-wk').value);
+  var cc=parseFloat(document.getElementById('concurrent').value);
+  var spt=parseInt(document.getElementById('spt').value);
+  var mt=parseInt(document.getElementById('min-t').value);
+  var li=parseFloat(document.getElementById('lang-int').value);
+  var att=parseFloat(document.getElementById('att').value);
+  var peakMult=parseFloat(document.getElementById('peak-mult').value);
+  var rampPct=parseFloat(document.getElementById('ramp-pct').value);
+  var R=compute(usPen,usFreq,intPen,intFreq,usAvail,uc,isw,cc,spt,mt,li,att,peakMult,rampPct);
+  var rows=R.rows,tUSp=R.tUSp,tUD=R.tUD,usC=R.usC,usC_L=R.usC_L;
+  var euUA=R.euUA,euUA_L=R.euUA_L,euC=R.euC,euC_L=R.euC_L;
+  var asUA=R.asUA,asUA_L=R.asUA_L,asC=R.asC,asC_L=R.asC_L;
+  var eAH=R.eAH,aAH=R.aAH,eAS=R.eAS,aAS=R.aAS,tc=R.tc;
+  var tUN=R.tUN,tUN_L=R.tUN_L,tES=R.tES,tES_L=R.tES_L,tAS2=R.tAS2,tAS2_L=R.tAS2_L;
+  var ok=usC===0;
+  var okL=usC_L===0;
+  var effRate=(usPen*usFreq).toFixed(1);
 
-  document.getElementById('summary').innerHTML=`
-    <div class="met ${ok?'':'hi'}">
-      <div class="ml">US contracts (full)</div>
-      <div class="mv" style="color:${ok?'var(--g1)':'var(--orange)'}">${ok?'None':'+'+f(usC)}</div>
-      <div class="ms">Peak-sized &middot; ${(usPen*100).toFixed(0)}% &times; ${usFreq} = ${effRate} sess/student</div>
-    </div>
-    <div class="met ${okL?'':'hi'}" style="border-style:dashed">
-      <div class="ml">US needed by Nov 1</div>
-      <div class="mv" style="color:${okL?'var(--g1)':'var(--orange)'}">${okL?'None':'+'+f(usC_L)}</div>
-      <div class="ms">${(rampPct*100).toFixed(0)}% adoption day one &middot; balance by Jan</div>
-    </div>
-    <div class="met"><div class="ml">UK contracts (Europe)</div><div class="mv">+${f(euC)}</div><div class="ms">${f(euUA)} active &middot; Nov 1 needed: +${f(euC_L)}</div></div>
-    <div class="met"><div class="ml">PH contracts (Asia)</div><div class="mv">+${f(asC)}</div><div class="ms">${f(asUA)} active &middot; Nov 1 needed: +${f(asC_L)}</div></div>
-    <div class="met peak"><div class="ml">Intl annual cost</div><div class="mv" style="color:var(--g1)">${fm(tc)}</div><div class="ms">${fm(tc/12)}/month &middot; ${peakMult}x peak</div></div>`;
+  // Summary metrics
+  document.getElementById('summary').innerHTML=
+    '<div class="met '+(ok?'':'hi')+'">'
+      +'<div class="ml">US contracts (full)</div>'
+      +'<div class="mv" style="color:'+(ok?'var(--g1)':'var(--orange)')+'">'+( ok?'None':'+'+f(usC))+'</div>'
+      +'<div class="ms">Peak-sized &middot; '+(usPen*100).toFixed(0)+'% &times; '+usFreq+' = '+effRate+' sess/student</div>'
+    +'</div>'
+    +'<div class="met '+(okL?'':'hi')+'" style="border-style:dashed">'
+      +'<div class="ml">US needed by Nov 1</div>'
+      +'<div class="mv" style="color:'+(okL?'var(--g1)':'var(--orange)')+'">'+( okL?'None':'+'+f(usC_L))+'</div>'
+      +'<div class="ms">'+(rampPct*100).toFixed(0)+'% adoption day one &middot; balance by Jan</div>'
+    +'</div>'
+    +'<div class="met"><div class="ml">UK contracts (Europe)</div><div class="mv">+'+f(euC)+'</div><div class="ms">'+f(euUA)+' active &middot; Nov 1 needed: +'+f(euC_L)+'</div></div>'
+    +'<div class="met"><div class="ml">PH contracts (Asia)</div><div class="mv">+'+f(asC)+'</div><div class="ms">'+f(asUA)+' active &middot; Nov 1 needed: +'+f(asC_L)+'</div></div>'
+    +'<div class="met peak"><div class="ml">Intl annual cost</div><div class="mv" style="color:var(--g1)">'+fm(tc)+'</div><div class="ms">'+fm(tc/12)+'/month &middot; '+peakMult+'x peak</div></div>';
 
-  const uS=[...rows].filter(r=>inUS(r)).sort((a,b)=>b.uD-a.uD);
-  document.getElementById('t-us').innerHTML=`
-    <div class="co ${ok?'co-g':'co-r'}">
-      Average weekly DOW demand: ${f(tUD)} sessions &middot; Spare at ${(uc*100).toFixed(0)}% ceiling: ${f(tUSp)} sessions/wk &middot; Peak demand (${peakMult}&times;): ${f(tUD*peakMult)} sessions/wk &middot;
-      ${ok?'Existing pool covers peak demand — no new US contracts needed':'Gap at peak: '+f(tUN)+' subject-slots &rarr; '+f(usC)+' contracts'}
-    </div>
-    <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#4c1d95">
-      <strong>Launch staging:</strong> At ${(rampPct*100).toFixed(0)}% day-one adoption, you need <strong>${f(usC_L)}</strong> contracts active by Nov 1. The remaining <strong>${f(Math.max(0,usC-usC_L))}</strong> (for when adoption grows to 100%) can be hired in Jan 2027 &mdash; no need to over-hire before launch.
-    </div>
-    <div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#92400e">
-      <strong>Tutor-subject combos vs unique tutors:</strong> Last column = combos needed (not unique people). ${f(tUN)} combos &divide; ${spt} subjects/tutor = ${f(R.usUA)} unique tutors &rarr; &divide; (1&minus;${Math.round(att*100)}% attrition) = <strong>${f(usC)} contracts</strong>. Run rate data is also in combos/month.
-    </div>
-    <table><thead><tr><th>Subject</th><th>Group</th><th>Regions</th><th>Duration</th><th>Avg demand/wk</th><th>Peak demand/wk</th><th>Spare (${(uc*100).toFixed(0)}%)</th><th>Gap</th><th>Subject-slots</th></tr></thead>
-    <tbody>${uS.map(function(r){
-      var nd_warn = r.nd ? '<span style="color:#f97316;font-size:10px;margin-left:4px">&#9888;</span>' : '';
-      var reg = r.noAS ? 'US+EU' : r.euO ? 'EU' : r.asO ? 'AS' : 'All';
-      var gap_td = r.uG > 0 ? f(r.uG) : '&mdash;';
-      var slots_color = r.uN > 0 ? 'var(--orange)' : 'var(--c400)';
-      var slots_val = r.uN > 0 ? '+' + r.uN : '&mdash;';
-      return '<tr>'
-        + '<td style="font-weight:500">' + r.n + nd_warn + '</td>'
-        + '<td>' + gbadge(r.g) + '</td>'
-        + '<td style="color:var(--c400);font-size:11px">' + reg + '</td>'
-        + '<td style="font-family:var(--mono);font-size:11px;color:var(--c400)">' + fd(r.dur) + 'm</td>'
-        + '<td>' + f(r.uD) + '</td>'
-        + '<td style="font-weight:500;color:#7c3aed">' + f(r.uD * peakMult) + '</td>'
-        + '<td>' + f(r.uSp) + '</td>'
-        + '<td style="color:var(--c400)">' + gap_td + '</td>'
-        + '<td style="font-weight:600;color:' + slots_color + '">' + slots_val + '</td>'
-        + '</tr>';
-    })).join('')}</tbody></table>
-    <div class="note">Demand = ${(usPen*100).toFixed(0)}% penetration &times; ${usFreq} sessions/active user/yr = ${effRate} effective sessions/student/yr. Peak = avg &times; ${peakMult}&times;. Spare = remaining hrs/wk &times; ${(uc*100).toFixed(0)}% &times; ${(usAvail*100).toFixed(0)}% willing &times; ${cc}&times; concurrent &divide; ${spt} subjects/tutor.</div>`;
+  // US tab
+  var uS=[].concat(rows).filter(function(r){return inUS(r);}).sort(function(a,b){return b.uD-a.uD;});
+  var usRows='';
+  uS.forEach(function(r){
+    var nd_warn=r.nd?'<span style="color:#f97316;font-size:10px;margin-left:4px">&#9888;</span>':'';
+    var reg=r.noAS?'US+EU':r.euO?'EU':r.asO?'AS':'All';
+    var gap_td=r.uG>0?f(r.uG):'&mdash;';
+    var slots_color=r.uN>0?'var(--orange)':'var(--c400)';
+    var slots_val=r.uN>0?'+'+r.uN:'&mdash;';
+    usRows+='<tr>'
+      +'<td style="font-weight:500">'+r.n+nd_warn+'</td>'
+      +'<td>'+gbadge(r.g)+'</td>'
+      +'<td style="color:var(--c400);font-size:11px">'+reg+'</td>'
+      +'<td style="font-family:var(--mono);font-size:11px;color:var(--c400)">'+fd(r.dur)+'m</td>'
+      +'<td>'+f(r.uD)+'</td>'
+      +'<td style="font-weight:500;color:#7c3aed">'+f(r.uD*peakMult)+'</td>'
+      +'<td>'+f(r.uSp)+'</td>'
+      +'<td style="color:var(--c400)">'+gap_td+'</td>'
+      +'<td style="font-weight:600;color:'+slots_color+'">'+slots_val+'</td>'
+      +'</tr>';
+  });
+  document.getElementById('t-us').innerHTML=
+    '<div class="co '+(ok?'co-g':'co-r')+'">'
+      +'Average weekly DOW demand: '+f(tUD)+' sessions &middot; Spare at '+(uc*100).toFixed(0)+'% ceiling: '+f(tUSp)+' sessions/wk &middot; Peak demand ('+peakMult+'&times;): '+f(tUD*peakMult)+' sessions/wk &middot; '
+      +(ok?'Existing pool covers peak demand &mdash; no new US contracts needed':'Gap at peak: '+f(tUN)+' subject-slots &rarr; '+f(usC)+' contracts')
+    +'</div>'
+    +'<div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#4c1d95">'
+      +'<strong>Launch staging:</strong> At '+(rampPct*100).toFixed(0)+'% day-one adoption, you need <strong>'+f(usC_L)+'</strong> contracts active by Nov 1. The remaining <strong>'+f(Math.max(0,usC-usC_L))+'</strong> can be hired in Jan 2027 &mdash; no need to over-hire before launch.'
+    +'</div>'
+    +'<div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#92400e">'
+      +'<strong>Tutor-subject combos vs unique tutors:</strong> Last column = combos needed (not unique people). '+f(tUN)+' combos &divide; '+spt+' subjects/tutor = '+f(R.usUA)+' unique tutors &rarr; &divide; (1&minus;'+Math.round(att*100)+'% attrition) = <strong>'+f(usC)+' contracts</strong>. Run rate data is also in combos/month.'
+    +'</div>'
+    +'<table><thead><tr><th>Subject</th><th>Group</th><th>Regions</th><th>Duration</th><th>Avg demand/wk</th><th>Peak demand/wk</th><th>Spare ('+(uc*100).toFixed(0)+'%)</th><th>Gap</th><th>Subject-slots</th></tr></thead>'
+    +'<tbody>'+usRows+'</tbody></table>'
+    +'<div class="note">Demand = '+(usPen*100).toFixed(0)+'% penetration &times; '+usFreq+' sessions/active user/yr = '+effRate+' effective sessions/student/yr. Peak = avg &times; '+peakMult+'&times;. Spare = remaining hrs/wk &times; '+(uc*100).toFixed(0)+'% &times; '+(usAvail*100).toFixed(0)+'% willing &times; '+cc+'&times; concurrent &divide; '+spt+' subjects/tutor.</div>';
 
-  const eS=[...rows].filter(r=>inEU(r)).sort((a,b)=>b.eT-a.eT);
-  document.getElementById('t-uk').innerHTML=`
-    <div class="co co-b">${f(tES)} combos &divide; ${spt} = ${f(euUA)} unique tutors &rarr; ${f(euC)} contracts (full) &middot; By Nov 1: ${f(tES_L)} combos = ${f(euUA_L)} unique tutors &rarr; ${f(euC_L)} contracts</div>
-    <table><thead><tr><th>Subject</th><th>Group</th><th>Student pool</th><th>Avg demand/wk</th><th>Peak demand/wk</th><th>Eff. sess/tutor/wk</th><th>Tutors (full)</th></tr></thead>
-    <tbody>${eS.map(function(r){
-      var pool = r.la ? f(ST.EU*(r.cw||1)) + ' (' + ((r.cw||1)*100).toFixed(0) + '%)' : f(ST.EU);
-      return '<tr>'
-        + '<td style="font-weight:500">' + r.n + '</td>'
-        + '<td>' + gbadge(r.g) + '</td>'
-        + '<td style="font-size:11px;color:var(--c600)">' + pool + '</td>'
-        + '<td>' + f(r.eD) + '</td>'
-        + '<td style="font-weight:500;color:#7c3aed">' + f(r.eD * peakMult) + '</td>'
-        + '<td style="font-family:var(--mono);color:var(--c400)">' + (isw*cc).toFixed(1) + '</td>'
-        + '<td style="font-weight:600;color:var(--g1)">' + r.eT + '</td>'
-        + '</tr>';
-    })).join('')}</tbody></table>
-    <div class="note">Includes Spanish (US+EU). German 40% of EU, Italian 30%. Lang interest: ${(li*100).toFixed(0)}%. Peak = avg &times; ${peakMult}&times;.</div>`;
+  // EU tab
+  var eS=[].concat(rows).filter(function(r){return inEU(r);}).sort(function(a,b){return b.eT-a.eT;});
+  var euRows='';
+  eS.forEach(function(r){
+    var pool=r.la?f(ST.EU*(r.cw||1))+' ('+((r.cw||1)*100).toFixed(0)+'%)':f(ST.EU);
+    euRows+='<tr>'
+      +'<td style="font-weight:500">'+r.n+'</td>'
+      +'<td>'+gbadge(r.g)+'</td>'
+      +'<td style="font-size:11px;color:var(--c600)">'+pool+'</td>'
+      +'<td>'+f(r.eD)+'</td>'
+      +'<td style="font-weight:500;color:#7c3aed">'+f(r.eD*peakMult)+'</td>'
+      +'<td style="font-family:var(--mono);color:var(--c400)">'+(isw*cc).toFixed(1)+'</td>'
+      +'<td style="font-weight:600;color:var(--g1)">'+r.eT+'</td>'
+      +'</tr>';
+  });
+  document.getElementById('t-uk').innerHTML=
+    '<div class="co co-b">'+f(tES)+' combos &divide; '+spt+' = '+f(euUA)+' unique tutors &rarr; '+f(euC)+' contracts (full) &middot; By Nov 1: '+f(tES_L)+' combos = '+f(euUA_L)+' unique tutors &rarr; '+f(euC_L)+' contracts</div>'
+    +'<table><thead><tr><th>Subject</th><th>Group</th><th>Student pool</th><th>Avg demand/wk</th><th>Peak demand/wk</th><th>Eff. sess/tutor/wk</th><th>Tutors (full)</th></tr></thead>'
+    +'<tbody>'+euRows+'</tbody></table>'
+    +'<div class="note">Includes Spanish (US+EU). German 40% of EU, Italian 30%. Lang interest: '+(li*100).toFixed(0)+'%. Peak = avg &times; '+peakMult+'&times;.</div>';
 
-  const aS=[...rows].filter(r=>inAS(r)).sort((a,b)=>b.aT-a.aT);
-  document.getElementById('t-as').innerHTML=`
-    <div class="co co-o">${f(tAS2)} combos &divide; ${spt} = ${f(asUA)} unique tutors &rarr; ${f(asC)} contracts (full) &middot; By Nov 1: ${f(tAS2_L)} combos = ${f(asUA_L)} unique tutors &rarr; ${f(asC_L)} contracts</div>
-    <table><thead><tr><th>Subject</th><th>Group</th><th>Student pool</th><th>Avg demand/wk</th><th>Peak demand/wk</th><th>Eff. sess/tutor/wk</th><th>Tutors (full)</th></tr></thead>
-    <tbody>${aS.map(function(r){
-      var pool = r.la ? f(ST.AS*(r.cw||1)) + ' (' + ((r.cw||1)*100).toFixed(0) + '%)' : f(ST.AS);
-      return '<tr>'
-        + '<td style="font-weight:500">' + r.n + '</td>'
-        + '<td>' + gbadge(r.g) + '</td>'
-        + '<td style="font-size:11px;color:var(--c600)">' + pool + '</td>'
-        + '<td>' + f(r.aD) + '</td>'
-        + '<td style="font-weight:500;color:#7c3aed">' + f(r.aD * peakMult) + '</td>'
-        + '<td style="font-family:var(--mono);color:var(--c400)">' + (isw*cc).toFixed(1) + '</td>'
-        + '<td style="font-weight:600;color:var(--g1)">' + r.aT + '</td>'
-        + '</tr>';
-    })).join('')}</tbody></table>
-    <div class="note">Spanish excluded from Asia. Japanese 60% (Japan ~54K), Korean 40% (South Korea ~28K). Lang interest: ${(li*100).toFixed(0)}%. Peak = avg &times; ${peakMult}&times;.</div>`;
+  // AS tab
+  var aS=[].concat(rows).filter(function(r){return inAS(r);}).sort(function(a,b){return b.aT-a.aT;});
+  var asRows='';
+  aS.forEach(function(r){
+    var pool=r.la?f(ST.AS*(r.cw||1))+' ('+((r.cw||1)*100).toFixed(0)+'%)':f(ST.AS);
+    asRows+='<tr>'
+      +'<td style="font-weight:500">'+r.n+'</td>'
+      +'<td>'+gbadge(r.g)+'</td>'
+      +'<td style="font-size:11px;color:var(--c600)">'+pool+'</td>'
+      +'<td>'+f(r.aD)+'</td>'
+      +'<td style="font-weight:500;color:#7c3aed">'+f(r.aD*peakMult)+'</td>'
+      +'<td style="font-family:var(--mono);color:var(--c400)">'+(isw*cc).toFixed(1)+'</td>'
+      +'<td style="font-weight:600;color:var(--g1)">'+r.aT+'</td>'
+      +'</tr>';
+  });
+  document.getElementById('t-as').innerHTML=
+    '<div class="co co-o">'+f(tAS2)+' combos &divide; '+spt+' = '+f(asUA)+' unique tutors &rarr; '+f(asC)+' contracts (full) &middot; By Nov 1: '+f(tAS2_L)+' combos = '+f(asUA_L)+' unique tutors &rarr; '+f(asC_L)+' contracts</div>'
+    +'<table><thead><tr><th>Subject</th><th>Group</th><th>Student pool</th><th>Avg demand/wk</th><th>Peak demand/wk</th><th>Eff. sess/tutor/wk</th><th>Tutors (full)</th></tr></thead>'
+    +'<tbody>'+asRows+'</tbody></table>'
+    +'<div class="note">Spanish excluded from Asia. Japanese 60% (Japan ~54K), Korean 40% (South Korea ~28K). Lang interest: '+(li*100).toFixed(0)+'%. Peak = avg &times; '+peakMult+'&times;.</div>';
 
   // Timeline
-  const euMo=Math.ceil(euC/3),asMo=Math.ceil(asC/3),usMo=usC>0?Math.ceil(usC/3):0;
-  const BARS=[
-    {lb:'UK hire',s:5,e:7,c:'#09634f',t:'+'+f(euC)},
-    {lb:'PH hire',s:5,e:7,c:'#d97706',t:'+'+f(asC)},
-    {lb:'US hire',s:5,e:7,c:'#5fa48f',t:usC>0?'+'+f(usC):'None needed'},
-    {lb:'Nov 1 Launch',s:9,e:9,c:'#ef4444',t:'LAUNCH'},
-  ];
-  // Run rate stress test: show at 100%, 80%, 60%
-  const rrScenarios=[
-    {label:'100% (March 2026 actuals)',mult:1.0,cls:'bg-g'},
-    {label:'80% run rate',mult:0.8,cls:'bg-o'},
-    {label:'60% run rate',mult:0.6,cls:'bg-r'},
-  ];
-  // uN_launch = combos needed by Nov 1 (ramp-adjusted); uN = full peak combos
-  const usBySubj=uS.filter(r=>r.uN>0||r.uN_launch>0).map(r=>{
-    const rr=RR_BASE[r.n]||0;
-    const lc=r.uN_launch||0;  // launch combos
-    const fc=r.uN||0;          // full combos
+  var euMo=Math.ceil(euC/3),asMo=Math.ceil(asC/3),usMo=usC>0?Math.ceil(usC/3):0;
+  var usBySubj=uS.filter(function(r){return r.uN>0||r.uN_launch>0;}).map(function(r){
+    var rr=RR_BASE[r.n]||0;
+    var lc=r.uN_launch||0;
+    var fc=r.uN||0;
     return{
       n:r.n,
       launch_combos:lc,
       launch_tutors:Math.ceil(lc/spt),
       full_combos:fc,
       full_tutors:Math.ceil(fc/spt),
-      rr,
-      // Months based on LAUNCH combos (what must be done by Nov 1)
+      rr:rr,
       mos100:rr>0&&lc>0?Math.ceil(lc/rr):null,
       mos80:rr>0&&lc>0?Math.ceil(lc/(rr*0.8)):null,
-      mos60:rr>0&&lc>0?Math.ceil(lc/(rr*0.6)):null,
+      mos60:rr>0&&lc>0?Math.ceil(lc/(rr*0.6)):null
     };
   });
-  const riskClass=(m)=>m===null?'bg-r':m>=4?'bg-r':m>=3?'bg-o':'bg-g';
+  var riskClass=function(m){return m===null?'bg-r':m>=4?'bg-r':m>=3?'bg-o':'bg-g';};
 
-  
-  // Build timeline HTML pieces (no nested template literals)
-  var tl_bars_html = '';
   var BARS=[
     {lb:'UK hire',    s:5,e:7,c:'#09634f', t:'+'+f(R.tES_L)+' combos (Nov 1)'},
     {lb:'UK stage 2', s:8,e:9,c:'#38826e', t:R.tES-R.tES_L>0?'+'+f(R.tES-R.tES_L)+' Jan':''},
@@ -608,175 +604,171 @@ function render(){
     {lb:'PH stage 2', s:8,e:9,c:'#f59e0b', t:R.tAS2-R.tAS2_L>0?'+'+f(R.tAS2-R.tAS2_L)+' Jan':''},
     {lb:'US hire',    s:5,e:7,c:'#5fa48f', t:R.tUN_L>0?'+'+f(R.tUN_L)+' combos (Nov 1)':'None needed'},
     {lb:'US stage 2', s:8,e:9,c:'#a2ccb4', t:R.tUN-R.tUN_L>0?'+'+f(R.tUN-R.tUN_L)+' Jan':''},
-    {lb:'Launch',     s:9,e:9,c:'#ef4444', t:'Nov 1'},
+    {lb:'Launch',     s:9,e:9,c:'#ef4444', t:'Nov 1'}
   ];
-  var month_labels_html = 'Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov'.split(',').map(function(m){
+  var monthHdr='Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov'.split(',').map(function(m){
     return '<div style="font-size:9px;color:var(--c400);text-align:center">'+m+'</div>';
   }).join('');
-  BARS.filter(function(b){ return b.t || b.lb==='Launch'; }).forEach(function(b){
-    var cells = '';
+  var barsHtml='';
+  BARS.filter(function(b){return b.t||b.lb==='Launch';}).forEach(function(b){
+    var cells='';
     for(var i=0;i<10;i++){
-      if(i>=b.s && i<=b.e && b.t){
-        cells += '<div class="tl-bar" style="background:'+b.c+'">'+(i===b.s?b.t:'')+'</div>';
-      } else {
-        cells += '<div class="tl-e"></div>';
-      }
+      cells+=i>=b.s&&i<=b.e&&b.t
+        ?'<div class="tl-bar" style="background:'+b.c+'">'+(i===b.s?b.t:'')+'</div>'
+        :'<div class="tl-e"></div>';
     }
-    tl_bars_html += '<div style="display:grid;grid-template-columns:130px 1fr;gap:6px;margin-bottom:5px;align-items:center">'
-      + '<div style="font-size:11px;color:var(--c600);font-weight:500">'+b.lb+'</div>'
-      + '<div style="display:grid;grid-template-columns:repeat(10,1fr);gap:2px">'+cells+'</div>'
-      + '</div>';
+    barsHtml+='<div style="display:grid;grid-template-columns:130px 1fr;gap:6px;margin-bottom:5px;align-items:center">'
+      +'<div style="font-size:11px;color:var(--c600);font-weight:500">'+b.lb+'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(10,1fr);gap:2px">'+cells+'</div>'
+      +'</div>';
   });
 
-  var tl_us_tutors_html = usC>0
-    ? '<div style="font-size:12px;color:var(--g2);margin-top:2px">'+f(R.usUA)+' unique tutors (÷'+spt+')</div>'
-    : '';
-  var tl_us_launch_tutors_html = usC_L>0
-    ? '<div style="font-size:12px;color:var(--g2)">'+f(R.usUA_L)+' unique tutors</div>'
-    : '';
-  var tl_pace_html = '';
+  var usTutHtml=usC>0?'<div style="font-size:12px;color:var(--g2);margin-top:2px">'+f(R.usUA)+' unique tutors (\xf7'+spt+')</div>':'';
+  var usLaunchTutHtml=usC_L>0?'<div style="font-size:12px;color:var(--g2)">'+f(R.usUA_L)+' unique tutors</div>':'';
+
+  var paceHtml='';
   if(usBySubj.length>0){
-    var pace_rows = '';
+    var paceRows='';
     usBySubj.forEach(function(r){
-      pace_rows += '<tr>'
-        + '<td style="font-weight:500">'+r.n+'</td>'
-        + '<td style="font-weight:600;color:var(--g1)">'+r.launch_combos+'</td>'
-        + '<td style="color:var(--g2)">'+r.launch_tutors+'</td>'
-        + '<td style="color:var(--c600)">'+r.full_combos+'</td>'
-        + '<td style="color:var(--c400)">'+r.full_tutors+'</td>'
-        + '<td style="font-family:var(--mono)">'+(r.rr>0?r.rr+'/mo':'no data')+'</td>'
-        + '<td><span class="bg '+riskClass(r.mos100)+'">'+(r.mos100!==null?r.mos100+' mo':'&mdash;')+'</span></td>'
-        + '<td><span class="bg '+riskClass(r.mos80)+'">'+(r.mos80!==null?r.mos80+' mo':'&mdash;')+'</span></td>'
-        + '<td><span class="bg '+riskClass(r.mos60)+'">'+(r.mos60!==null?r.mos60+' mo':'&mdash;')+'</span></td>'
-        + '</tr>';
+      paceRows+='<tr>'
+        +'<td style="font-weight:500">'+r.n+'</td>'
+        +'<td style="font-weight:600;color:var(--g1)">'+r.launch_combos+'</td>'
+        +'<td style="color:var(--g2)">'+r.launch_tutors+'</td>'
+        +'<td style="color:var(--c600)">'+r.full_combos+'</td>'
+        +'<td style="color:var(--c400)">'+r.full_tutors+'</td>'
+        +'<td style="font-family:var(--mono)">'+(r.rr>0?r.rr+'/mo':'no data')+'</td>'
+        +'<td><span class="bg '+riskClass(r.mos100)+'">'+(r.mos100!==null?r.mos100+' mo':'&mdash;')+'</span></td>'
+        +'<td><span class="bg '+riskClass(r.mos80)+'">'+(r.mos80!==null?r.mos80+' mo':'&mdash;')+'</span></td>'
+        +'<td><span class="bg '+riskClass(r.mos60)+'">'+(r.mos60!==null?r.mos60+' mo':'&mdash;')+'</span></td>'
+        +'</tr>';
     });
-    tl_pace_html = '<div class="sec" style="margin-top:1.5rem">US subject pacing &mdash; run rate stress test</div>'
-      + '<div class="co co-o" style="font-size:12px"><strong>Run rates are tutor-subject combos/month</strong> (March 2026 actuals). One tutor with 4 subjects = 4 combos. Months needed = combos needed by Nov 1 &divide; run rate. Window = 3 months (Jul&ndash;Sep). <strong>Recommend refreshing rates in June 2026.</strong></div>'
-      + '<table><thead><tr>'
-      + '<th>Subject</th><th>Combos by Nov 1</th><th>Unique tutors by Nov 1</th><th>Combos full (peak)</th><th>Unique tutors full</th><th>Run rate (combos/mo)</th><th>Months @ 100%</th><th>Months @ 80%</th><th>Months @ 60%</th>'
-      + '</tr></thead><tbody>'
-      + pace_rows
-      + '</tbody></table>'
-      + '<div class="note">Green = fits in &le;2 months. Amber = 3 months (tight). Red = &ge;4 months or no run rate data. Months calculated on combos needed by Nov 1, based on '+(rampPct*100).toFixed(0)+'% day-one adoption level. Full (peak-sized) combos are the eventual target by Jan 2027. Run rates from March 2026 &mdash; update in June 2026 before hiring starts.</div>';
+    paceHtml='<div class="sec" style="margin-top:1.5rem">US subject pacing &mdash; run rate stress test</div>'
+      +'<div class="co co-o" style="font-size:12px"><strong>Run rates are tutor-subject combos/month</strong> (March 2026 actuals). One tutor with 4 subjects = 4 combos. Months needed = combos needed by Nov 1 &divide; run rate. Window = 3 months (Jul&ndash;Sep). <strong>Recommend refreshing rates in June 2026.</strong></div>'
+      +'<table><thead><tr><th>Subject</th><th>Combos by Nov 1</th><th>Unique tutors by Nov 1</th><th>Combos full (peak)</th><th>Unique tutors full</th><th>Run rate (combos/mo)</th><th>Months @ 100%</th><th>Months @ 80%</th><th>Months @ 60%</th></tr></thead>'
+      +'<tbody>'+paceRows+'</tbody></table>'
+      +'<div class="note">Green = &le;2 months. Amber = 3 months (tight). Red = &ge;4 months or no run rate data. Months based on '+(rampPct*100).toFixed(0)+'% day-one adoption. Run rates from March 2026 &mdash; update in June 2026.</div>';
   }
 
   document.getElementById('t-tl').innerHTML=
-    '<div class="co co-g">All three regions hire Jul&ndash;Sep 2026. The <strong>day-one adoption level</strong> determines how many tutor-subject combos must be in place by Nov 1. Example: at '+(rampPct*100).toFixed(0)+'%, you only need tutors for '+(rampPct*100).toFixed(0)+'% of the eventual full user base on launch day &mdash; the remaining '+(100-rampPct*100).toFixed(0)+'% worth of tutors can be hired in January 2027 once adoption grows.</div>'
-    + '<div class="rg">'
-      + '<div class="rc"><div class="rt">US &mdash; tutor-subject combos</div>'
-        + '<div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>'
-        + '<div style="font-size:20px;font-weight:600;color:'+(usC>0?'var(--orange)':'var(--g1)')+';">'+(usC>0?f(R.tUN)+' combos':'None needed')+'</div>'
-        + tl_us_tutors_html
-        + '<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">'
-          + '<div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 &mdash; '+(rampPct*100).toFixed(0)+'% day-one adoption</div>'
-          + '<div style="font-size:17px;font-weight:600;color:'+(usC_L>0?'var(--orange)':'var(--g1)')+';;margin-top:2px">'+(usC_L>0?f(R.tUN_L)+' combos':'None needed')+'</div>'
-          + tl_us_launch_tutors_html
-        + '</div>'
-      + '</div>'
-      + '<div class="rc"><div class="rt">UK (Europe)</div>'
-        + '<div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>'
-        + '<div style="font-size:20px;font-weight:600;color:var(--g1);">+'+f(R.tES)+' combos</div>'
-        + '<div style="font-size:12px;color:var(--g2);margin-top:2px">'+f(euUA)+' unique tutors (÷'+spt+')</div>'
-        + '<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">'
-          + '<div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 &mdash; '+(rampPct*100).toFixed(0)+'% day-one adoption</div>'
-          + '<div style="font-size:17px;font-weight:600;color:var(--g1);margin-top:2px">+'+f(R.tES_L)+' combos</div>'
-          + '<div style="font-size:12px;color:var(--g2)">'+f(euUA_L)+' unique tutors</div>'
-        + '</div>'
-      + '</div>'
-      + '<div class="rc"><div class="rt">Philippines (Asia)</div>'
-        + '<div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>'
-        + '<div style="font-size:20px;font-weight:600;color:var(--orange);">+'+f(R.tAS2)+' combos</div>'
-        + '<div style="font-size:12px;color:var(--g2);margin-top:2px">'+f(asUA)+' unique tutors (÷'+spt+')</div>'
-        + '<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">'
-          + '<div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 &mdash; '+(rampPct*100).toFixed(0)+'% day-one adoption</div>'
-          + '<div style="font-size:17px;font-weight:600;color:var(--orange);margin-top:2px">+'+f(R.tAS2_L)+' combos</div>'
-          + '<div style="font-size:12px;color:var(--g2)">'+f(asUA_L)+' unique tutors</div>'
-        + '</div>'
-      + '</div>'
-    + '</div>'
-    + '<div class="sec">Visual hiring timeline</div>'
-    + '<div style="display:grid;grid-template-columns:130px 1fr;gap:6px;margin-bottom:4px">'
-      + '<div></div>'
-      + '<div style="display:grid;grid-template-columns:repeat(10,1fr);gap:2px">'+month_labels_html+'</div>'
-    + '</div>'
-    + tl_bars_html
-    + tl_pace_html;
+    '<div class="co co-g">All three regions hire Jul&ndash;Sep 2026. The <strong>day-one adoption level</strong> determines how many tutor-subject combos must be in place by Nov 1. At '+(rampPct*100).toFixed(0)+'%, you only need tutors for '+(rampPct*100).toFixed(0)+'% of the eventual full user base &mdash; the remaining '+(100-rampPct*100).toFixed(0)+'% can be hired in January 2027 once adoption grows.</div>'
+    +'<div class="rg">'
+      +'<div class="rc"><div class="rt">US &mdash; tutor-subject combos</div>'
+        +'<div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>'
+        +'<div style="font-size:20px;font-weight:600;color:'+(usC>0?'var(--orange)':'var(--g1)')+';">'+(usC>0?f(R.tUN)+' combos':'None needed')+'</div>'
+        +usTutHtml
+        +'<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">'
+          +'<div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 &mdash; '+(rampPct*100).toFixed(0)+'% day-one adoption</div>'
+          +'<div style="font-size:17px;font-weight:600;color:'+(usC_L>0?'var(--orange)':'var(--g1)')+';;margin-top:2px">'+(usC_L>0?f(R.tUN_L)+' combos':'None needed')+'</div>'
+          +usLaunchTutHtml
+        +'</div>'
+      +'</div>'
+      +'<div class="rc"><div class="rt">UK (Europe)</div>'
+        +'<div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>'
+        +'<div style="font-size:20px;font-weight:600;color:var(--g1);">+'+f(R.tES)+' combos</div>'
+        +'<div style="font-size:12px;color:var(--g2);margin-top:2px">'+f(euUA)+' unique tutors (\xf7'+spt+')</div>'
+        +'<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">'
+          +'<div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 &mdash; '+(rampPct*100).toFixed(0)+'% day-one adoption</div>'
+          +'<div style="font-size:17px;font-weight:600;color:var(--g1);margin-top:2px">+'+f(R.tES_L)+' combos</div>'
+          +'<div style="font-size:12px;color:var(--g2)">'+f(euUA_L)+' unique tutors</div>'
+        +'</div>'
+      +'</div>'
+      +'<div class="rc"><div class="rt">Philippines (Asia)</div>'
+        +'<div style="font-size:11px;color:var(--c400);margin-bottom:6px">Full (peak-sized)</div>'
+        +'<div style="font-size:20px;font-weight:600;color:var(--orange);">+'+f(R.tAS2)+' combos</div>'
+        +'<div style="font-size:12px;color:var(--g2);margin-top:2px">'+f(asUA)+' unique tutors (\xf7'+spt+')</div>'
+        +'<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--c200)">'
+          +'<div style="font-size:10px;color:var(--c400);font-weight:600;text-transform:uppercase;letter-spacing:.06em">By Nov 1 &mdash; '+(rampPct*100).toFixed(0)+'% day-one adoption</div>'
+          +'<div style="font-size:17px;font-weight:600;color:var(--orange);margin-top:2px">+'+f(R.tAS2_L)+' combos</div>'
+          +'<div style="font-size:12px;color:var(--g2)">'+f(asUA_L)+' unique tutors</div>'
+        +'</div>'
+      +'</div>'
+    +'</div>'
+    +'<div class="sec">Visual hiring timeline</div>'
+    +'<div style="display:grid;grid-template-columns:130px 1fr;gap:6px;margin-bottom:4px">'
+      +'<div></div>'
+      +'<div style="display:grid;grid-template-columns:repeat(10,1fr);gap:2px">'+monthHdr+'</div>'
+    +'</div>'
+    +barsHtml
+    +paceHtml;
 
-
-
-  document.getElementById('t-season')document.getElementById('t-season').innerHTML=`
-    <div class="co co-p">Seasonal demand indices derived from 221,727 live chat sessions across DOW subjects over 720 days (Apr 2024 &ndash; Mar 2026). 1.0 = average month. <strong>Nov 1 launch hits at 1.31&times; average &mdash; not a soft start.</strong> Peak is Oct at 1.83&times;.</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem">
-      ${Object.entries(SEASON).map(([m,idx])=>{
-        const isLaunch=parseInt(m)===11;
-        const isPeak=parseInt(m)===10;
-        const w=Math.round(idx/maxIdx*100);
-        const col=isPeak?'#7c3aed':isLaunch?'var(--g1)':idx>=1.2?'var(--g2)':idx<0.5?'var(--c300)':'var(--g3)';
-        return `<div style="background:${isLaunch?'var(--mint)':isPeak?'#f5f3ff':'var(--c100)'};border:1px solid ${isLaunch?'var(--g2)':isPeak?'#ddd6fe':'var(--c200)'};border-radius:8px;padding:12px">
-          <div style="font-size:11px;font-weight:600;color:var(--c400);margin-bottom:4px">${MONTH_NAMES[parseInt(m)-1]}${isLaunch?' &#128640;':isPeak?' &#9650;':''}</div>
-          <div style="font-size:22px;font-weight:600;color:${col}">${idx.toFixed(2)}&times;</div>
-          <div style="background:var(--c200);border-radius:2px;height:6px;margin-top:6px;overflow:hidden"><div style="background:${col};height:100%;width:${w}%;border-radius:2px"></div></div>
-          <div style="font-size:10px;color:var(--c400);margin-top:4px">${idx>=1?'+'+((idx-1)*100).toFixed(0)+'% above avg':((idx-1)*100).toFixed(0)+'% below avg'}</div>
-        </div>`;
-      }).join('')}
-    </div>
-    <div class="co co-p">
-      <strong>Military family calendar note:</strong> DoDEA follows a US academic calendar (Sep&ndash;Jun). The Sep/Oct peak perfectly matches the back-to-school rush. The Nov 1 launch date is strategically timed &mdash; students are 2 months into the school year and actively seeking help approaching semester exams. Expect immediate above-average demand from day one, not a gradual ramp. The summer trough (Jun&ndash;Jul = 0.12&times;) is when contracting should happen &mdash; which aligns with the Jul&ndash;Sep hiring window.
-    </div>
-    <div class="co co-o">
-      <strong>Peak demand implication:</strong> At the current ${peakMult}&times; peak multiplier, the model is sizing for ${(peakMult/SEASON[11]*100).toFixed(0)}% of the Oct peak. To fully cover the Oct 1.83&times; peak, set the multiplier to 1.83&times;. The difference between 1.3&times; and 1.83&times; represents the additional buffer needed to guarantee no stockouts during the busiest weeks.
-    </div>`;
+  // Seasonality
+  var maxIdx=Math.max.apply(null,Object.values(SEASON));
+  var seasonCards='';
+  Object.entries(SEASON).forEach(function(entry){
+    var m=entry[0],idx=entry[1];
+    var isLaunch=parseInt(m)===11;
+    var isPeak=parseInt(m)===10;
+    var w=Math.round(idx/maxIdx*100);
+    var col=isPeak?'#7c3aed':isLaunch?'var(--g1)':idx>=1.2?'var(--g2)':idx<0.5?'var(--c300)':'var(--g3)';
+    var bg=isLaunch?'var(--mint)':isPeak?'#f5f3ff':'var(--c100)';
+    var bdr=isLaunch?'var(--g2)':isPeak?'#ddd6fe':'var(--c200)';
+    var mname=MONTH_NAMES[parseInt(m)-1];
+    var icon=isLaunch?' &#128640;':isPeak?' &#9650;':'';
+    var pct=idx>=1?'+'+((idx-1)*100).toFixed(0)+'% above avg':((idx-1)*100).toFixed(0)+'% below avg';
+    seasonCards+='<div style="background:'+bg+';border:1px solid '+bdr+';border-radius:8px;padding:12px">'
+      +'<div style="font-size:11px;font-weight:600;color:var(--c400);margin-bottom:4px">'+mname+icon+'</div>'
+      +'<div style="font-size:22px;font-weight:600;color:'+col+'">'+idx.toFixed(2)+'&times;</div>'
+      +'<div style="background:var(--c200);border-radius:2px;height:6px;margin-top:6px;overflow:hidden"><div style="background:'+col+';height:100%;width:'+w+'%;border-radius:2px"></div></div>'
+      +'<div style="font-size:10px;color:var(--c400);margin-top:4px">'+pct+'</div>'
+      +'</div>';
+  });
+  document.getElementById('t-season').innerHTML=
+    '<div class="co co-p">Seasonal demand indices derived from 221,727 live chat sessions across DOW subjects over 720 days (Apr 2024 &ndash; Mar 2026). 1.0 = average month. <strong>Nov 1 launch hits at 1.31&times; average &mdash; not a soft start.</strong> Peak is Oct at 1.83&times;.</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem">'+seasonCards+'</div>'
+    +'<div class="co co-p"><strong>Military family calendar note:</strong> DoDEA follows a US academic calendar (Sep&ndash;Jun). The Sep/Oct peak perfectly matches the back-to-school rush. The Nov 1 launch date is strategically timed &mdash; students are 2 months into the school year and actively seeking help approaching semester exams. Expect immediate above-average demand from day one, not a gradual ramp. The summer trough (Jun&ndash;Jul = 0.12&times;) is when contracting should happen &mdash; which aligns with the Jul&ndash;Sep hiring window.</div>'
+    +'<div class="co co-o"><strong>Peak demand implication:</strong> At the current '+peakMult+'&times; peak multiplier, the model is sizing for '+(peakMult/SEASON[11]*100).toFixed(0)+'% of the Oct peak. To fully cover the Oct 1.83&times; peak, set the multiplier to 1.83&times;. The difference between 1.3&times; and 1.83&times; represents the additional buffer needed to guarantee no stockouts during the busiest weeks.</div>';
 
   // Cost
-  const avgED=eAS>0?(eAH/eAS*60).toFixed(1):'&mdash;';
-  const avgAD=aAS>0?(aAH/aAS*60).toFixed(1):'&mdash;';
-  document.getElementById('t-cost').innerHTML=`
-    <div class="co co-n" style="margin-bottom:1.2rem">Cost based on average session demand (not peak). EU weighted avg: ${avgED} min &middot; Asia: ${avgAD} min. Demand = ${(usPen*100).toFixed(0)}% &times; ${usFreq} = ${effRate} effective sessions/student/yr.</div>
-    <div class="cg3c">
-      <div class="cc"><div class="ct">Europe &mdash; UK</div>
-        <div class="cline"><span>Active at launch</span><span>${f(euUA)}</span></div>
-        <div class="cline"><span>Full contracts</span><span>${f(euC)}</span></div>
-        <div class="cline"><span>Annual sessions</span><span>${f(eAS)}</span></div>
-        <div class="cline"><span>Annual hours</span><span>${f(eAH)}</span></div>
-        <div class="cline"><span>Rate</span><span>$${UKR}/hr</span></div>
-        <div class="ctot"><span>Annual cost</span><span>${fm(eAH*UKR)}</span></div>
-        <div style="font-size:11px;color:var(--c400);margin-top:6px">${fm(eAH*UKR/12)}/month</div>
-      </div>
-      <div class="cc"><div class="ct">Asia &mdash; Philippines</div>
-        <div class="cline"><span>Active at launch</span><span>${f(asUA)}</span></div>
-        <div class="cline"><span>Full contracts</span><span>${f(asC)}</span></div>
-        <div class="cline"><span>Annual sessions</span><span>${f(aAS)}</span></div>
-        <div class="cline"><span>Annual hours</span><span>${f(aAH)}</span></div>
-        <div class="cline"><span>Rate</span><span>$${ASR}/hr</span></div>
-        <div class="ctot"><span>Annual cost</span><span>${fm(aAH*ASR)}</span></div>
-        <div style="font-size:11px;color:var(--c400);margin-top:6px">${fm(aAH*ASR/12)}/month</div>
-      </div>
-      <div class="cc" style="border:2px solid var(--g2)"><div class="ct">Total international</div>
-        <div class="cline"><span>Active tutors</span><span>${f(euUA+asUA)}</span></div>
-        <div class="cline"><span>Total full contracts</span><span>${f(euC+asC)}</span></div>
-        <div class="cline"><span>Annual hours</span><span>${f(eAH+aAH)}</span></div>
-        <div class="ctot"><span>Annual cost</span><span>${fm(tc)}</span></div>
-        <div style="font-size:11px;color:var(--c400);margin-top:6px">${fm(tc/12)}/month &middot; US excluded (no incremental cost)</div>
-      </div>
-    </div>`;
+  var avgED=eAS>0?(eAH/eAS*60).toFixed(1):'&mdash;';
+  var avgAD=aAS>0?(aAH/aAS*60).toFixed(1):'&mdash;';
+  document.getElementById('t-cost').innerHTML=
+    '<div class="co co-n" style="margin-bottom:1.2rem">Cost based on average session demand (not peak). EU weighted avg: '+avgED+' min &middot; Asia: '+avgAD+' min. Demand = '+(usPen*100).toFixed(0)+'% &times; '+usFreq+' = '+effRate+' effective sessions/student/yr.</div>'
+    +'<div class="cg3c">'
+      +'<div class="cc"><div class="ct">Europe &mdash; UK</div>'
+        +'<div class="cline"><span>Active at launch</span><span>'+f(euUA)+'</span></div>'
+        +'<div class="cline"><span>Full contracts</span><span>'+f(euC)+'</span></div>'
+        +'<div class="cline"><span>Annual sessions</span><span>'+f(eAS)+'</span></div>'
+        +'<div class="cline"><span>Annual hours</span><span>'+f(eAH)+'</span></div>'
+        +'<div class="cline"><span>Rate</span><span>$'+UKR+'/hr</span></div>'
+        +'<div class="ctot"><span>Annual cost</span><span>'+fm(eAH*UKR)+'</span></div>'
+        +'<div style="font-size:11px;color:var(--c400);margin-top:6px">'+fm(eAH*UKR/12)+'/month</div>'
+      +'</div>'
+      +'<div class="cc"><div class="ct">Asia &mdash; Philippines</div>'
+        +'<div class="cline"><span>Active at launch</span><span>'+f(asUA)+'</span></div>'
+        +'<div class="cline"><span>Full contracts</span><span>'+f(asC)+'</span></div>'
+        +'<div class="cline"><span>Annual sessions</span><span>'+f(aAS)+'</span></div>'
+        +'<div class="cline"><span>Annual hours</span><span>'+f(aAH)+'</span></div>'
+        +'<div class="cline"><span>Rate</span><span>$'+ASR+'/hr</span></div>'
+        +'<div class="ctot"><span>Annual cost</span><span>'+fm(aAH*ASR)+'</span></div>'
+        +'<div style="font-size:11px;color:var(--c400);margin-top:6px">'+fm(aAH*ASR/12)+'/month</div>'
+      +'</div>'
+      +'<div class="cc" style="border:2px solid var(--g2)"><div class="ct">Total international</div>'
+        +'<div class="cline"><span>Active tutors</span><span>'+f(euUA+asUA)+'</span></div>'
+        +'<div class="cline"><span>Total full contracts</span><span>'+f(euC+asC)+'</span></div>'
+        +'<div class="cline"><span>Annual hours</span><span>'+f(eAH+aAH)+'</span></div>'
+        +'<div class="ctot"><span>Annual cost</span><span>'+fm(tc)+'</span></div>'
+        +'<div style="font-size:11px;color:var(--c400);margin-top:6px">'+fm(tc/12)+'/month &middot; US excluded (no incremental cost)</div>'
+      +'</div>'
+    +'</div>';
 
-  document.getElementById('t-notes').innerHTML=`
-    <table><thead><tr><th>Assumption</th><th>Current value</th><th>Source / rationale</th></tr></thead><tbody>
-      <tr><td>Student penetration rate</td><td>US: ${(usPen*100).toFixed(0)}% &middot; Intl: ${(intPen*100).toFixed(0)}%</td><td>Estimated. Military families = distinct demographic. Track actual sign-up rate in first 30 days post-launch and update.</td></tr>
-      <tr><td>Sessions per active user</td><td>US: ${usFreq}/yr &middot; Intl: ${intFreq}/yr</td><td>Estimated. Separating from penetration allows independent adjustment. Power users and light users behave very differently.</td></tr>
-      <tr><td>Peak demand multiplier</td><td>${peakMult}&times;</td><td>Validated from 2yr session data: Oct = 1.83&times; avg, Nov (launch) = 1.31&times; avg. Sep/Oct back-to-school is the dominant peak. Capacity must cover this, not just the annual average.</td></tr>
-      <tr><td>Launch ramp (first 60 days)</td><td>${(rampPct*100).toFixed(0)}% of steady-state</td><td>New program adoption is rarely immediate. Nov+Dec represent 20.3% of annual demand at full adoption. Ramp adjusts how many contracts are needed on day one vs staged into Jan 2027.</td></tr>
-      <tr><td>Seasonal indices</td><td>Oct 1.83&times;, Nov 1.31&times;, Jul 0.12&times;</td><td>Derived from 221,727 live chat sessions across DOW subjects, Apr 2024&ndash;Mar 2026. DoDEA follows US academic calendar.</td></tr>
-      <tr><td>Utilization ceiling</td><td>${(uc*100).toFixed(0)}%</td><td>Industry norm 70&ndash;80%. Remainder = buffer for spikes &amp; no-shows.</td></tr>
-      <tr><td>US monthly run rates</td><td>March 2026 actuals</td><td style="color:#92400e">&#9888; These will be stale by July 2026 when hiring starts. Recommend refreshing in June 2026. Timeline tab shows impact at 80% and 60% of current rates.</td></tr>
-      <tr><td>EU/AS sessions/tutor/wk</td><td>${isw}/wk</td><td>Validated from US session data P75. New international tutors may start closer to median (2/wk) for first 60&ndash;90 days.</td></tr>
-      <tr><td>Subjects per tutor</td><td>${spt}</td><td>Validated: actual avg 3.43 from session history.</td></tr>
-      <tr><td>SAT / ACT &#9888;</td><td>19 min proxy</td><td>Not observed in session dataset. May route differently.</td></tr>
-      <tr><td>Language splits (EU)</td><td>German 40% &middot; Italian 30%</td><td>Germany ~35K troops, Italy ~12K.</td></tr>
-      <tr><td>Language splits (Asia)</td><td>Japanese 60% &middot; Korean 40%</td><td>Japan ~54K troops, South Korea ~28K.</td></tr>
-      <tr><td>Language interest rate</td><td>${(li*100).toFixed(0)}%</td><td>Conservative estimate. Military families may over-index on host-country language learning.</td></tr>
-      <tr><td>Pre-launch attrition</td><td>${Math.round(att*100)}%</td><td>Tutors who drop before Nov 1. Contracts = active &divide; (1 &minus; attrition).</td></tr>
-    </tbody></table>`;
+  // Assumptions
+  document.getElementById('t-notes').innerHTML=
+    '<table><thead><tr><th>Assumption</th><th>Current value</th><th>Source / rationale</th></tr></thead><tbody>'
+    +'<tr><td>Student penetration rate</td><td>US: '+(usPen*100).toFixed(0)+'% &middot; Intl: '+(intPen*100).toFixed(0)+'%</td><td>Estimated. Military families = distinct demographic. Track actual sign-up rate in first 30 days post-launch and update.</td></tr>'
+    +'<tr><td>Sessions per active user</td><td>US: '+usFreq+'/yr &middot; Intl: '+intFreq+'/yr</td><td>Estimated. Separating from penetration allows independent adjustment. Power users and light users behave very differently.</td></tr>'
+    +'<tr><td>Peak demand multiplier</td><td>'+peakMult+'&times;</td><td>Validated from 2yr session data: Oct = 1.83&times; avg, Nov (launch) = 1.31&times; avg. Sep/Oct back-to-school is the dominant peak. Capacity must cover this, not just the annual average.</td></tr>'
+    +'<tr><td>Day-one adoption level</td><td>'+(rampPct*100).toFixed(0)+'% of steady-state</td><td>New program adoption is rarely immediate. Nov+Dec represent 20.3% of annual demand at full adoption. Drives how many contracts needed on day one vs staged into Jan 2027.</td></tr>'
+    +'<tr><td>Seasonal indices</td><td>Oct 1.83&times;, Nov 1.31&times;, Jul 0.12&times;</td><td>Derived from 221,727 live chat sessions across DOW subjects, Apr 2024&ndash;Mar 2026. DoDEA follows US academic calendar.</td></tr>'
+    +'<tr><td>Utilization ceiling</td><td>'+(uc*100).toFixed(0)+'%</td><td>Industry norm 70&ndash;80%. Remainder = buffer for spikes &amp; no-shows.</td></tr>'
+    +'<tr><td>US monthly run rates</td><td>March 2026 actuals</td><td style="color:#92400e">&#9888; These will be stale by July 2026 when hiring starts. Recommend refreshing in June 2026. Timeline tab shows impact at 80% and 60% of current rates.</td></tr>'
+    +'<tr><td>EU/AS sessions/tutor/wk</td><td>'+isw+'/wk</td><td>Validated from US session data P75. New international tutors may start closer to median (2/wk) for first 60&ndash;90 days.</td></tr>'
+    +'<tr><td>Subjects per tutor</td><td>'+spt+'</td><td>Validated: actual avg 3.43 from session history.</td></tr>'
+    +'<tr><td>SAT / ACT &#9888;</td><td>19 min proxy</td><td>Not observed in session dataset. May route differently.</td></tr>'
+    +'<tr><td>Language splits (EU)</td><td>German 40% &middot; Italian 30%</td><td>Germany ~35K troops, Italy ~12K.</td></tr>'
+    +'<tr><td>Language splits (Asia)</td><td>Japanese 60% &middot; Korean 40%</td><td>Japan ~54K troops, South Korea ~28K.</td></tr>'
+    +'<tr><td>Language interest rate</td><td>'+(li*100).toFixed(0)+'%</td><td>Conservative estimate. Military families may over-index on host-country language learning.</td></tr>'
+    +'<tr><td>Pre-launch attrition</td><td>'+Math.round(att*100)+'%</td><td>Tutors who drop before Nov 1. Contracts = active &divide; (1 &minus; attrition).</td></tr>'
+    +'</tbody></table>';
 }
 
 function showTab(name,btn){
