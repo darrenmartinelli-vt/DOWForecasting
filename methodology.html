@@ -137,8 +137,9 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
   <div class="ph-title">DOW Forecast Model &mdash; Methodology &amp; Guide</div>
   <div class="ph-sub">Everything you need to understand how the model works, what the numbers mean, what has been validated from real data, and how to use the interactive controls.</div>
   <div class="ph-tags">
-    <span class="ph-tag">230,602 sessions analyzed</span>
+    <span class="ph-tag">221,727 sessions analyzed</span>
     <span class="ph-tag">720 days of data</span>
+    <span class="ph-tag">84,686 IC sessions blended</span>
     <span class="ph-tag">29 subjects</span>
     <span class="ph-tag">Data: March 2026</span>
   </div>
@@ -192,17 +193,21 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
     <span class="sec-chevron">&#8964;</span>
   </div>
   <div class="sec-body">
-    <p>For every subject and every region, the model calculates how many live chat sessions per week will be needed at launch.</p>
+    <p>For every subject and every region, the model calculates how many live chat sessions per week will be needed at launch. Demand is split into two independent levers: <strong>penetration rate</strong> (what % of students ever use live chat) and <strong>sessions per active user</strong> (how often they use it).</p>
     <div class="formula">
       <span class="label">Core demand formula</span>
-      Weekly sessions = Student population &times; Usage rate &times; Annual sessions/student &times; Subject weight &divide; 52
+      Weekly sessions = Student population &times; Penetration rate &times; Sessions per active user/yr &times; Subject weight &divide; 52
     </div>
+    <p>Separating penetration from frequency lets you stress-test each assumption independently. "5% of students using it 20 times" and "20% of students using it 5 times" produce the same total demand but very different tutor profile needs.</p>
 
     <h4>Subject demand weights</h4>
-    <p>Each subject's share of total demand is derived from its share of instant video (IV) requests across the platform — 38,000 IV requests across all 29 subjects. This is the best available proxy for live chat demand mix, since live chat and instant video serve similar on-demand needs.</p>
+    <p>Each subject's demand share is derived from a blended pool of <strong>84,686 Instant Chat (IC) sessions</strong> and <strong>16,852 IV requests</strong> — a combined pool of 91,658 data points across 29 DOW subjects. IC data is used as the primary source for the 20 subjects where it's available, since IC sessions are the most direct proxy for live chat demand. For the 9 subjects with no IC history (Pre-Algebra, SAT, ACT, Exec. Func., and all 5 language subjects), IV counts are scaled to IC equivalents using the ratio between the two datasets.</p>
+    <div class="callout c-info"><strong>Why this matters:</strong> The IC data significantly shifted weights vs IV alone. Middle School Math rose from 9.8% to 23.0% of demand — it dominates actual chat sessions far more than IV suggested. Algebra 2, Pre-Calculus, HS Chemistry and HS Physics all dropped substantially, as students with those problems tend to prefer instant video over chat. HS English, MS Writing and HS Writing were all significantly under-weighted by IV alone.</div>
 
     <h4>Language subjects</h4>
-    <p>Language subjects apply an additional country-weight filter, since not all students in a region will want the same language. Population splits are based on US troop presence:</p>
+    <p>Language subjects are handled differently depending on the subject:</p>
+    <p><strong>Spanish</strong> uses the blended IC+IV weight path — its scaled demand gives it a 3.8% share of total demand (coincidentally unchanged from IV alone). No language interest rate is applied because real observed demand exists. Spanish is available in the US and Europe only (excluded from Asia). Note: the Europe Spanish estimate is a modest overstatement since most EU bases are in Germany, Italy and the UK, not Spain — though two US bases do exist in Spain (Naval Station Rota and Morón Air Base).</p>
+    <p><strong>German, Italian, Japanese and Korean</strong> have no meaningful baseline demand data. Their demand is calculated using the <strong>language interest rate</strong> (default 25%) — the estimated fraction of eligible-country students who want host-country language tutoring — applied on top of the country-weight filter:</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Language</th><th>Region</th><th>Country weight</th><th>Basis</th></tr></thead>
@@ -211,16 +216,15 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
           <tr><td>Italian</td><td>Europe</td><td>30% of EU students</td><td>Italy ~12,000 US troops</td></tr>
           <tr><td>Japanese</td><td>Asia</td><td>60% of Asia students</td><td>Japan ~54,000 US troops (largest Asia base)</td></tr>
           <tr><td>Korean</td><td>Asia</td><td>40% of Asia students</td><td>South Korea ~28,000 US troops</td></tr>
-          <tr><td>Spanish</td><td>US + Europe</td><td>100% of eligible students</td><td>Widely relevant; excluded from Asia</td></tr>
         </tbody>
       </table>
     </div>
-    <p>Language demand is then further filtered by the <strong>language interest rate</strong> (default 25%) — the estimated fraction of eligible-country students who actually want language tutoring.</p>
+    <p>The language interest rate control does <em>not</em> affect Spanish or any non-language subject.</p>
 
     <h4>SAT &amp; ACT — international adjustment</h4>
     <p>Overseas demand for SAT and ACT is set to 60% of the US weight per student. DoDEA (Department of Defense Education Activity) explicitly covers SAT/ACT fees for overseas military families and offers exam administration on base.</p>
 
-    <div class="callout c-warn"><strong>&#9888; SAT and ACT data gap:</strong> Neither subject was observed in the 230,602-session dataset (39 subjects were present). They may route through a different channel than live chat. Demand estimates are retained in the model but treat headcount for these subjects with caution.</div>
+    <div class="callout c-warn"><strong>&#9888; SAT and ACT data gap:</strong> Neither subject was observed in the 221,727-session dataset (39 subjects were present). They may route through a different channel than live chat. Demand estimates are retained in the model but treat headcount for these subjects with caution.</div>
   </div>
 </div>
 
@@ -244,7 +248,7 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
     <div class="steps">
       <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Remaining hours/wk</strong> — from Tutor Utilization import (week of 3/22/26). Already net of existing demand.</div></div>
       <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Utilization ceiling (default 75%)</strong> — only this fraction of remaining hours is offered to DOW. The other 25% is held back as a buffer for demand spikes, tutor no-shows, and organic platform growth. Industry norm for on-demand platforms: 70&ndash;80%. Running at 100% causes stockouts when demand surges.</div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>% willing (default 60%)</strong> — US tutors choose whether to accept DOW work. UK/PH tutors are 100% available since they are contracted exclusively for DOW.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>% willing (default 80%)</strong> — US tutors choose whether to accept DOW work. UK/PH tutors are 100% available since they are contracted exclusively for DOW.</div></div>
       <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Concurrent multiplier (default 1.2&times;)</strong> — live chat tutors can handle multiple sessions simultaneously. Validated from data: 15.6% of tutors ran concurrent sessions, 26.6% of sessions overlapped. 1.2&times; reflects the average effective throughput uplift across the pool.</div></div>
       <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Subjects per tutor (default 4)</strong> — divides the total spare hours by the average number of subjects each tutor covers, to avoid double-counting the same tutor across multiple subject rows. Validated: actual average 3.43 subjects/tutor from session history.</div></div>
     </div>
@@ -271,17 +275,17 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
     <span class="sec-chevron">&#8964;</span>
   </div>
   <div class="sec-body">
-    <div class="callout c-info"><strong>Important:</strong> The "Subject-slots needed" column in the US table shows <em>tutor-subject assignments</em>, not unique people. One tutor covering 4 subjects counts as 4 slots. The summary contract count in the header card is the final unique-person number after deduplication and attrition gross-up.</div>
+    <div class="callout c-info"><strong>Important:</strong> The last column in the US table shows <em>tutor-subject combos</em>, not unique people. One tutor covering 4 subjects = 4 combos. The summary cards show combos needed, contracts to place, and the Nov 1 subset. Contracts is the final unique-person number after deduplication and attrition gross-up: combos &divide; subjects per tutor = unique tutors &divide; (1 &minus; attrition) = contracts.</div>
 
     <div class="steps">
-      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Subject-slots needed per subject</strong> = Gap sessions/wk &divide; effective sessions per tutor/wk. Minimum floor of 1 tutor per subject (configurable). These are <em>slots</em>, not people.</div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Unique active tutors</strong> = Total subject-slots &divide; avg subjects per tutor. This deduplicates — a tutor covering 4 subjects fills 4 slots but is only 1 person.</div></div>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Tutor-subject combos needed per subject</strong> = Gap sessions/wk &divide; effective sessions per tutor/wk. Minimum floor of 1 tutor per subject (configurable). These are <em>combos</em>, not people.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Unique active tutors</strong> = Total combos &divide; avg subjects per tutor. This deduplicates — a tutor covering 4 subjects fills 4 combos but is only 1 person.</div></div>
       <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Contracts to place</strong> = Unique active tutors &divide; (1 &minus; attrition rate). Grosses up for the expected dropout rate between contracting and Nov 1 launch. Default 20%.</div></div>
     </div>
 
     <div class="formula">
       <span class="label">Summary reconciliation (example at base settings)</span>
-      Total subject-slots &divide; 4 subjects/tutor = Unique active tutors
+      Total tutor-subject combos &divide; 4 subjects/tutor = Unique active tutors
       <br>
       Unique active tutors &divide; (1 &minus; 20%) = Contracts to place
     </div>
@@ -298,7 +302,7 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
     <span class="sec-chevron">&#8964;</span>
   </div>
   <div class="sec-body">
-    <p>Session duration affects <strong>cost only</strong> — not headcount. The model uses per-subject actual durations validated from 230,602 sessions over 720 days.</p>
+    <p>Session duration affects <strong>cost only</strong> — not headcount. The model uses per-subject actual durations validated from 221,727 sessions over 720 days.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Subject group</th><th>Avg duration</th><th>Status</th></tr></thead>
@@ -339,7 +343,7 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
         </tbody>
       </table>
     </div>
-    <p>Cost scales with demand (usage rate and student population), not headcount. Tutors are paid per session, not per hour of availability. The Cost tab in the model shows a weighted average session duration across all subjects in each region, since HS subjects run longer than ES/MS subjects.</p>
+    <p>Cost scales with demand (penetration rate &times; sessions per user &times; student population), not headcount. Tutors are paid per session, not per hour of availability. The Cost tab in the model shows a weighted average session duration across all subjects in each region, since HS subjects run longer than ES/MS subjects.</p>
   </div>
 </div>
 
@@ -351,18 +355,32 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
     <span class="sec-chevron">&#8964;</span>
   </div>
   <div class="sec-body">
+    <h4>Hiring window</h4>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Region</th><th>Window</th><th>Rationale</th></tr></thead>
         <tbody>
-          <tr><td><strong>UK (Europe)</strong></td><td>July &ndash; September 2026</td><td>Contract counts are low enough to fit within the standard 3-month window used for US. Simplifies pipeline management by aligning all regions.</td></tr>
-          <tr><td><strong>Philippines (Asia)</strong></td><td>July &ndash; September 2026</td><td>Same as UK &mdash; aligned to the US window. ICA work and legal review can run in parallel during June.</td></tr>
-          <tr><td><strong>US</strong></td><td>July &ndash; September 2026</td><td>Existing infrastructure. 3-month window is sufficient for smaller volumes typically needed.</td></tr>
+          <tr><td><strong>UK (Europe)</strong></td><td>July &ndash; September 2026</td><td>Aligned with US window. ICA work and legal review can run in parallel during June.</td></tr>
+          <tr><td><strong>Philippines (Asia)</strong></td><td>July &ndash; September 2026</td><td>Same as UK. All three regions hiring in parallel simplifies pipeline management.</td></tr>
+          <tr><td><strong>US</strong></td><td>July &ndash; September 2026 (standard)</td><td>Standard window. Run rate stress test in the Timeline tab will flag if a high-demand scenario requires earlier start.</td></tr>
         </tbody>
       </table>
     </div>
-    <p>US timing is grounded in real monthly run rates per subject from March 2026 contracting data. SAT (10/mo) and ACT (5/mo) have the lowest run rates — if US contracts are required for these subjects, hiring must start earliest.</p>
-    <p>UK/PH monthly pace is set by dividing total contracts evenly across the 3-month Jul&ndash;Sep window, aligned with US. No historical international run rate exists, so pace is assumed to be linear across the window.</p>
+
+    <h4>Day-one adoption &amp; two-stage contracting</h4>
+    <p>Not all contracts need to be placed before Nov 1. The model separates the full peak-sized target from the Nov 1 launch target using the <strong>day-one adoption level</strong> (default 35%). This reflects the reality that new programs rarely hit full utilization on day one.</p>
+    <div class="callout c-green">
+      <strong>Example at base settings (35% day-one adoption):</strong> If the model projects 200 full contracts for a region, only 70 need to be active by Nov 1. The remaining 130 can be contracted in January 2027 as adoption grows — no need to over-hire before launch.
+    </div>
+    <p>This also means the contracting timeline depends on <em>which</em> target you use. The Timeline tab shows both the Nov 1 combo target and the full peak target, with separate bars for each stage.</p>
+
+    <h4>US run rate stress test</h4>
+    <p>US timing is validated against real monthly contracting run rates from March 2026 data. The Timeline tab calculates months needed per subject (combos needed by Nov 1 &divide; run rate) and flags in red any subject that requires more months than remain in the Jul&ndash;Sep window. <strong>Recommend refreshing run rates in June 2026</strong> before hiring starts — March actuals will be stale by then.</p>
+    <p>SAT (10 combos/mo) and ACT (5 combos/mo) have the lowest run rates. At high demand scenarios these subjects drive the earliest required start date.</p>
+
+    <h4>Why the Nov 1 launch date is not a soft start</h4>
+    <p>From 2 years of session history, November runs at <strong>1.31&times; the annual average</strong>. November and December together represent <strong>20.3% of annual demand</strong>. Tutors must be active and tested by launch day — not still onboarding.</p>
+    <p>UK/PH monthly pace is assumed linear across the Jul&ndash;Sep window. No historical international run rate exists. Pace assumptions should be validated once pipeline data is available.</p>
   </div>
 </div>
 
@@ -384,15 +402,18 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
       <table>
         <thead><tr><th>Assumption</th><th>Status</th><th>Value / source</th></tr></thead>
         <tbody>
-          <tr><td>Session duration per subject</td><td><span class="badge b-val">Validated</span></td><td>Measured from 230,602 actual sessions over 720 days</td></tr>
+          <tr><td>Session duration per subject</td><td><span class="badge b-val">Validated</span></td><td>Measured from 221,727 actual sessions over 720 days</td></tr>
+          <tr><td>Subject demand weights</td><td><span class="badge b-val">Validated</span></td><td>Blended from 84,686 IC sessions (primary, 20 subjects) + 16,852 IV requests (scaled, 9 subjects). Total pool: 91,658. IC data is more directly relevant — it is actual live chat session data.</td></tr>
           <tr><td>Avg concurrent chats (1.2&times;)</td><td><span class="badge b-val">Validated</span></td><td>15.6% of tutors multitask; 26.6% of sessions overlap — from session data</td></tr>
           <tr><td>Subjects per tutor (avg 4)</td><td><span class="badge b-val">Validated</span></td><td>Actual avg 3.43 from session history; 4 used as planning default</td></tr>
           <tr><td>Sessions/wk per active tutor (P75 = 7)</td><td><span class="badge b-val">Validated</span></td><td>From session data: median 2, mean 7.6, P75 = 7 sessions/active week</td></tr>
           <tr><td>US remaining hours (spare capacity)</td><td><span class="badge b-val">Validated</span></td><td>From live tutor utilization import (desired &minus; utilized), week of 3/22/26</td></tr>
           <tr><td>Troop presence by country</td><td><span class="badge b-val">Validated</span></td><td>Germany ~35K, Italy ~12K, Japan ~54K, South Korea ~28K &mdash; US DoD public data</td></tr>
           <tr><td>DoDEA curriculum is US-standard</td><td><span class="badge b-val">Validated</span></td><td>DoDEA uses College and Career Readiness Standards in all regions</td></tr>
+          <tr><td>Seasonal demand indices</td><td><span class="badge b-val">Validated</span></td><td>Derived from 221,727 live chat sessions over 720 days. Oct = 1.83&times;, Nov = 1.31&times;, Jul = 0.12&times; the monthly average. Nov+Dec = 20.3% of annual demand.</td></tr>
           <tr><td>SAT/ACT offered overseas</td><td><span class="badge b-val">Validated</span></td><td>DoDEA explicitly covers SAT/ACT fees for overseas families</td></tr>
-          <tr><td>Usage rate (6.5% default)</td><td><span class="badge b-est">Estimated</span></td><td>Reasonable estimate based on prior DOW program analysis. Track in first weeks post-launch.</td></tr>
+          <tr><td>US penetration rate (10% default)</td><td><span class="badge b-est">Estimated</span></td><td>% of military students who ever use live chat. Distinct demographic — track actual sign-up rate in first 30 days post-launch.</td></tr>
+          <tr><td>Sessions per active user (9/yr default)</td><td><span class="badge b-est">Estimated</span></td><td>How often active users engage. Separated from penetration to allow independent stress-testing.</td></tr>
           <tr><td>Language interest rate (25%)</td><td><span class="badge b-est">Estimated</span></td><td>Conservative estimate. Military families may be more motivated than average.</td></tr>
           <tr><td>EU/AS sessions/wk (7 default)</td><td><span class="badge b-est">Estimated</span></td><td>Based on US actual P75 — may not reflect newly contracted international tutors.</td></tr>
           <tr><td>Utilization ceiling (75%)</td><td><span class="badge b-est">Estimated</span></td><td>Industry norm. Reflects standard buffer practice for on-demand platforms.</td></tr>
@@ -412,67 +433,109 @@ td code{font-family:var(--mono);font-size:12px;background:var(--c100);padding:2p
     <span class="sec-chevron">&#8964;</span>
   </div>
   <div class="sec-body">
-    <p>All controls update every output in real time. Changes to demand inputs affect headcount and cost equally. Changes to supply inputs primarily affect headcount; cost is only affected by concurrent chats (via headcount) and session duration (directly).</p>
+    <p>All controls update every output in real time. Controls are grouped by region — US-only, EU/AS-only, and all-regions. Changes to demand inputs affect headcount and cost. Changes to supply inputs primarily affect headcount.</p>
+
+    <h4>🇺🇸 United States — Demand</h4>
     <div class="dd-grid">
       <div class="dd-item">
-        <div class="dd-section">Demand</div>
-        <div class="dd-name">US usage rate</div>
-        <div class="dd-default">Default: 6.5% &middot; 13 sessions/yr</div>
-        <div class="dd-desc">Fraction of 888K US DOW students who use live chat, and how many times per year. Scales total US session demand proportionally.</div>
+        <div class="dd-section">US Demand</div>
+        <div class="dd-name">Student penetration rate</div>
+        <div class="dd-default">Default: 10%</div>
+        <div class="dd-desc">% of 888K US DOW students who ever use live chat. Military families are a distinct demographic — track actual sign-up in the first 30 days and update.</div>
       </div>
       <div class="dd-item">
-        <div class="dd-section">Demand</div>
-        <div class="dd-name">Europe &amp; Asia usage rate</div>
-        <div class="dd-default">Default: 6.5% &middot; 13 sessions/yr</div>
-        <div class="dd-desc">Same as US but applied to international populations. Can be set lower to reflect slower initial adoption in a new market.</div>
+        <div class="dd-section">US Demand</div>
+        <div class="dd-name">Sessions per active user per year</div>
+        <div class="dd-default">Default: 9 sessions/yr</div>
+        <div class="dd-desc">How often students who use the service come back. Separated from penetration so both assumptions can be stressed independently. Power users and light users behave very differently.</div>
+      </div>
+    </div>
+
+    <h4>🇺🇸 United States — Supply</h4>
+    <div class="dd-grid">
+      <div class="dd-item">
+        <div class="dd-section">US Supply</div>
+        <div class="dd-name">Tutors willing to take live chat</div>
+        <div class="dd-default">Default: 80%</div>
+        <div class="dd-desc">Existing US tutors who opt in to DOW work. UK/PH tutors are always 100% (contracted exclusively for DOW). Based on assumption — a tutor pulse survey would validate this.</div>
       </div>
       <div class="dd-item">
-        <div class="dd-section">Demand</div>
+        <div class="dd-section">US Supply</div>
+        <div class="dd-name">Max utilization ceiling</div>
+        <div class="dd-default">Default: 75% — recommended</div>
+        <div class="dd-desc">Caps the fraction of US spare hours offered to DOW. The remaining 25% is a buffer for demand spikes and tutor dropoff. Industry norm: 70&ndash;80%. This is the most impactful US lever — moving from 75% to 100% can eliminate US contracts entirely at base demand.</div>
+      </div>
+    </div>
+
+    <h4>🌍🌏 Europe &amp; Asia — Demand</h4>
+    <div class="dd-grid">
+      <div class="dd-item">
+        <div class="dd-section">EU/AS Demand</div>
+        <div class="dd-name">Student penetration rate</div>
+        <div class="dd-default">Default: 10%</div>
+        <div class="dd-desc">% of eligible EU/AS students who use live chat. Can be set lower than US to reflect slower adoption in a new market with no existing VT brand recognition.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">EU/AS Demand</div>
+        <div class="dd-name">Sessions per active user per year</div>
+        <div class="dd-default">Default: 9 sessions/yr</div>
+        <div class="dd-desc">Session frequency for international active users. Same options as US — both can be dialed independently.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">EU/AS Demand</div>
         <div class="dd-name">Language interest rate</div>
         <div class="dd-default">Default: 25%</div>
-        <div class="dd-desc">Fraction of eligible-country students who want language tutoring. Applied on top of usage rate and country-weight. 25% is conservative.</div>
+        <div class="dd-desc">Applies only to German, Italian, Japanese and Korean — not Spanish (which uses real IV data). Fraction of eligible-country students who want host-country language tutoring. Does not affect any non-language subject.</div>
       </div>
+    </div>
+
+    <h4>🌍🌏 Europe &amp; Asia — Supply</h4>
+    <div class="dd-grid">
       <div class="dd-item">
-        <div class="dd-section">Supply</div>
-        <div class="dd-name">US tutors willing to take live chat</div>
-        <div class="dd-default">Default: 60%</div>
-        <div class="dd-desc">Existing US tutors who opt in to DOW work. UK/PH tutors are always 100% (contracted exclusively for DOW). Increase if active outreach is planned.</div>
-      </div>
-      <div class="dd-item">
-        <div class="dd-section">Supply</div>
-        <div class="dd-name">Max utilization ceiling (US)</div>
-        <div class="dd-default">Default: 75% — recommended</div>
-        <div class="dd-desc">Caps the fraction of US spare hours offered to DOW. The remaining % is a buffer for demand spikes and tutor dropoff. Industry norm: 70&ndash;80%. This is the most impactful US lever — moving from 75% to 100% can eliminate US contracts entirely at base demand.</div>
-      </div>
-      <div class="dd-item">
-        <div class="dd-section">Supply</div>
-        <div class="dd-name">EU/AS sessions per tutor per week</div>
+        <div class="dd-section">EU/AS Supply</div>
+        <div class="dd-name">Sessions per tutor per week</div>
         <div class="dd-default">Default: 7/wk (P75 from actual data)</div>
-        <div class="dd-desc">How many sessions each UK or PH tutor handles per week. Validated from US data: median is 2, mean is 7.6, P75 is 7. Setting this lower is more conservative; higher assumes more active tutors.</div>
+        <div class="dd-desc">How many sessions each UK or PH tutor handles per week. Validated from US data: median 2, mean 7.6, P75 = 7. New international tutors may start closer to median for the first 60&ndash;90 days.</div>
       </div>
       <div class="dd-item">
-        <div class="dd-section">Supply</div>
+        <div class="dd-section">EU/AS Supply</div>
         <div class="dd-name">Avg concurrent chats per tutor</div>
         <div class="dd-default">Default: 1.2&times; (validated)</div>
-        <div class="dd-desc">Multiplier on effective tutor throughput. 1.2&times; reflects the ~26% session overlap rate observed in actual data. Applied to both US spare capacity and EU/AS capacity.</div>
+        <div class="dd-desc">Multiplier on effective tutor throughput. 1.2&times; reflects ~26% session overlap observed in actual data. Applied to both US and EU/AS capacity calculations.</div>
       </div>
+    </div>
+
+    <h4>🌐 All Regions</h4>
+    <div class="dd-grid">
       <div class="dd-item">
-        <div class="dd-section">Supply</div>
+        <div class="dd-section">All Regions</div>
         <div class="dd-name">Avg DOW subjects per tutor</div>
         <div class="dd-default">Default: 4 (validated avg: 3.43)</div>
-        <div class="dd-desc">Each tutor covers this many subjects. Deduplicates the subject-slot count into unique people. Validated from session history — actual average is 3.43 subjects/tutor.</div>
+        <div class="dd-desc">Converts tutor-subject combos into unique people. Validated: actual average is 3.43 subjects/tutor from session history.</div>
       </div>
       <div class="dd-item">
-        <div class="dd-section">Supply</div>
+        <div class="dd-section">All Regions</div>
+        <div class="dd-name">Peak demand multiplier</div>
+        <div class="dd-default">Default: 1.3&times; (Nov level)</div>
+        <div class="dd-desc">Applies to DOW demand only — not the 2025 baseline. Capacity is sized for peak demand, not the annual average. Oct = 1.83&times;, Nov (launch month) = 1.31&times;, Jul = 0.12&times;. Setting to 1.83&times; guarantees no stockouts even in the busiest weeks.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">All Regions</div>
+        <div class="dd-name">Day-one adoption level (Nov 1)</div>
+        <div class="dd-default">Default: 35%</div>
+        <div class="dd-desc">% of full steady-state demand expected on launch day. Drives how many contracts must be active by Nov 1 vs hired in Jan 2027 as adoption grows. Nov+Dec historically represent ~20% of annual demand at full scale.</div>
+      </div>
+      <div class="dd-item">
+        <div class="dd-section">All Regions</div>
         <div class="dd-name">Pre-launch attrition</div>
         <div class="dd-default">Default: 20%</div>
-        <div class="dd-desc">Fraction of contracted tutors who drop out before Nov 1 launch. Contracts are grossed up to ensure the active pool target is still met despite attrition.</div>
+        <div class="dd-desc">Fraction of contracted tutors who drop out before Nov 1. Contracts are grossed up: contracts = active tutors &divide; (1 &minus; attrition).</div>
       </div>
       <div class="dd-item">
-        <div class="dd-section">Supply</div>
+        <div class="dd-section">All Regions</div>
         <div class="dd-name">Min tutors per subject</div>
         <div class="dd-default">Default: 1</div>
-        <div class="dd-desc">Floor on tutors per subject. Prevents any subject from showing zero even if modeled demand is very small. Useful for ensuring baseline coverage.</div>
+        <div class="dd-desc">Floor on tutors per subject. Prevents any subject from showing zero even if modeled demand is very small. Useful for ensuring baseline coverage across all subjects.</div>
       </div>
     </div>
   </div>
